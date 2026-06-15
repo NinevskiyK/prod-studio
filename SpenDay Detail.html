@@ -136,8 +136,19 @@
     color: var(--ink);
     letter-spacing: -0.02em;
     line-height: 1.2;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
   }
+
+  .detail-location {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .detail-location svg { display: block; flex: 0 0 auto; }
 
   /* Tag pills */
   .tagrow {
@@ -217,61 +228,99 @@
   .steps {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
     margin-bottom: 30px;
   }
   .step {
     background: var(--card-bg);
     border: 1px solid #EFEFF6;
     border-radius: 16px;
-    padding: 13px 12px;
-    display: flex;
-    align-items: center;
-    gap: 11px;
+    overflow: hidden;
+  }
+  .step .st-thumb {
+    position: relative;
+    height: 110px;
+    width: 100%;
+  }
+  .step .st-thumb image-slot {
+    width: 100%;
+    height: 100%;
+    display: block;
   }
   .step .num {
-    flex: 0 0 auto;
-    width: 30px;
-    height: 30px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: var(--indigo);
     color: #fff;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(30, 27, 75, 0.25);
   }
-  .step .body { flex: 1 1 auto; min-width: 0; }
+  .step .st-price {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    height: 26px;
+    padding: 0 10px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(4px);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--indigo);
+    display: flex;
+    align-items: center;
+    z-index: 2;
+  }
+  .step .st-price.free { color: #10B981; }
+  .step .body {
+    padding: 12px 14px 14px;
+  }
   .step .st-title {
-    font-size: 14.5px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--ink);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     letter-spacing: -0.01em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.25;
   }
   .step .st-desc {
     font-size: 13px;
     font-weight: 500;
     color: var(--muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.45;
+    margin-bottom: 8px;
   }
-  .step .st-price {
-    flex: 0 0 auto;
-    font-size: 13px;
-    font-weight: 700;
+  .step .st-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #9CA3AF;
+    margin-bottom: 8px;
+  }
+  .step .st-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: #CBD0DA; }
+  .step .st-meta svg { display: block; flex: 0 0 auto; }
+  .step .st-tip {
+    font-size: 12px;
+    font-weight: 500;
     color: var(--indigo);
-    text-align: right;
-    white-space: nowrap;
-    align-self: center;
-    padding-left: 4px;
+    padding-top: 8px;
+    border-top: 1px solid #EFEFF6;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
-  .step .st-price.free { color: #10B981; }
+  .step .st-tip svg { display: block; flex: 0 0 auto; }
 
   /* Reviews */
   .rating-chip {
@@ -394,12 +443,16 @@
           <svg width="19" height="19" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="10" r="2.4" stroke="#fff" stroke-width="1.7"/><circle cx="14.5" cy="5" r="2.4" stroke="#fff" stroke-width="1.7"/><circle cx="14.5" cy="15" r="2.4" stroke="#fff" stroke-width="1.7"/><path d="M8.1 8.8l4.3-2.5M8.1 11.2l4.3 2.5" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
         </button>
         <span class="hero-cat">Свидание</span>
-        <image-slot id="detail-hero" placeholder="фото · вечерний город" src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=900&q=80"></image-slot>
+        <image-slot id="detail-hero" placeholder="фото · романтический ужин у моря" src="https://images.unsplash.com/photo-1542557497-4c7b03d0d245?w=900&q=80"></image-slot>
       </div>
 
       <!-- Content sheet -->
       <div class="sheet">
         <h1 class="title">Романтический вечер в центре</h1>
+        <div class="detail-location">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5C4.93 1.5 3.25 3.18 3.25 5.25 3.25 8.06 7 12.5 7 12.5s3.75-4.44 3.75-7.25C10.75 3.18 9.07 1.5 7 1.5z" fill="#4F46E5"/><circle cx="7" cy="5.25" r="1.5" fill="#fff"/></svg>
+          Москва
+        </div>
 
         <div class="tagrow">
           <span class="tag">
@@ -434,28 +487,67 @@
         </div>
         <div class="steps">
           <div class="step">
-            <div class="num">1</div>
+            <div class="st-thumb">
+              <div class="num">1</div>
+              <div class="st-price free">бесплатно</div>
+              <image-slot id="step1" placeholder="набережная" src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?w=600&q=75"></image-slot>
+            </div>
             <div class="body">
               <div class="st-title">Прогулка по набережной</div>
-              <div class="st-desc">Закатный маршрут</div>
+              <div class="st-desc">Пройдитесь вдоль реки от парка Горького до Крымского моста — идеальный закатный маршрут для двоих.</div>
+              <div class="st-meta">
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#9CA3AF" stroke-width="1.5"/><path d="M8 4.5V8l2.5 1.5" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>
+                ~45 мин
+                <span class="dot"></span>
+                Парк Горького → Крымский мост
+              </div>
+              <div class="st-tip">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM8 7.5v3M8 5.5v.5" stroke="#4F46E5" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Выходите за 30 мин до заката
+              </div>
             </div>
-            <div class="st-price free">бесплатно</div>
           </div>
           <div class="step">
-            <div class="num">2</div>
-            <div class="body">
-              <div class="st-title">Ужин в ресторане</div>
-              <div class="st-desc">Уютное место в центре</div>
+            <div class="st-thumb">
+              <div class="num">2</div>
+              <div class="st-price">от 2 500 ₽</div>
+              <image-slot id="step2" placeholder="ресторан" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=75"></image-slot>
             </div>
-            <div class="st-price">от 2 500 ₽</div>
+            <div class="body">
+              <div class="st-title">Ужин в ресторане «Тёплый край»</div>
+              <div class="st-desc">Уютное место с авторской кухней и панорамным видом на реку. Столик у окна — по брони.</div>
+              <div class="st-meta">
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#9CA3AF" stroke-width="1.5"/><path d="M8 4.5V8l2.5 1.5" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>
+                ~1,5 ч
+                <span class="dot"></span>
+                ул. Остоженка, 12
+              </div>
+              <div class="st-tip">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM8 7.5v3M8 5.5v.5" stroke="#4F46E5" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Попробуйте десерт от шефа
+              </div>
+            </div>
           </div>
           <div class="step">
-            <div class="num">3</div>
-            <div class="body">
-              <div class="st-title">Коктейли в баре</div>
-              <div class="st-desc">Авторская карта</div>
+            <div class="st-thumb">
+              <div class="num">3</div>
+              <div class="st-price">от 1 700 ₽</div>
+              <image-slot id="step3" placeholder="бар" src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&q=75"></image-slot>
             </div>
-            <div class="st-price">от 1 700 ₽</div>
+            <div class="body">
+              <div class="st-title">Коктейли в «Noor Bar»</div>
+              <div class="st-desc">Нишевый бар с авторской коктейльной картой. Бармен подберёт пару под ваше настроение.</div>
+              <div class="st-meta">
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#9CA3AF" stroke-width="1.5"/><path d="M8 4.5V8l2.5 1.5" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>
+                ~1–2 ч
+                <span class="dot"></span>
+                ул. Пятницкая, 27
+              </div>
+              <div class="st-tip">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM8 7.5v3M8 5.5v.5" stroke="#4F46E5" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Happy hour до 21:00 — −20%
+              </div>
+            </div>
           </div>
         </div>
 

@@ -273,20 +273,46 @@
   }
 
   /* ---------- Stats ---------- */
-  .stats {
+  .achievements {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
   }
-  .stat {
+  .ach {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .ach-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+  .ach-icon.gold { background: linear-gradient(135deg, #FDE68A, #F59E0B); }
+  .ach-icon.purple { background: linear-gradient(135deg, #C7D2FE, #818CF8); }
+  .ach-icon.green { background: linear-gradient(135deg, #A7F3D0, #34D399); }
+  .ach-icon.pink { background: linear-gradient(135deg, #FBCFE8, #F472B6); }
+  .ach-icon.blue { background: linear-gradient(135deg, #BFDBFE, #60A5FA); }
+  .ach-icon.amber { background: linear-gradient(135deg, #FDE68A, #D97706); }
+  .ach-icon.red { background: linear-gradient(135deg, #FECACA, #F87171); }
+  .ach-icon.teal { background: linear-gradient(135deg, #99F6E4, #2DD4BF); }
+  .ach-icon.locked {
     background: var(--card-bg);
     border: 1px solid #EFEFF6;
-    border-radius: 16px;
-    padding: 16px 10px;
-    text-align: center;
+    opacity: 0.5;
   }
-  .stat .v { font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
-  .stat .l { font-size: 11.5px; font-weight: 600; color: var(--muted); margin-top: 3px; }
+  .ach-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.2;
+  }
 
   /* ---------- Bottom nav ---------- */
   .bottomnav {
@@ -342,8 +368,8 @@
         </div>
       </div>
 
-      <button class="star-btn" aria-label="Достижения">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.2l2.1 4.6 5 .5-3.8 3.4 1.1 4.9L10 13.5 5.6 16l1.1-4.9L2.9 7.3l5-.5L10 2.2z" fill="#F5A623"/></svg>
+      <button class="star-btn" aria-label="Настройки">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" stroke="#fff" stroke-width="1.7"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1.08-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
 
       <div class="prow">
@@ -352,7 +378,7 @@
         </div>
         <div class="pinfo">
           <div class="nm">Александр</div>
-          <div class="em"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0968656c714964686065277b7c">[email&#160;protected]</a></div>
+          <div class="em">@aleksandr_m</div>
         </div>
       </div>
 
@@ -393,21 +419,53 @@
         <div class="sec-label">Запланировано</div>
         <div class="up-card">
           <div class="up-thumb">
-            <image-slot id="profile-up" placeholder="фото" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80"></image-slot>
+            <image-slot id="profile-up" placeholder="фото · друзья веселятся" src="https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=400&q=80"></image-slot>
           </div>
           <div class="up-body">
-            <div class="up-title">Бархоппинг по лучшим барам</div>
-            <div class="up-meta">15 июня • С друзьями • от 850 ₽/чел</div>
+            <div class="up-title">Лучшие нишевые бары в центре города</div>
+            <div class="up-meta">15 июня • 📍 4 места • ⏱ 5–6 ч</div>
           </div>
           <span class="soon">Скоро</span>
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="stats">
-        <div class="stat"><div class="v">12</div><div class="l">вечеров</div></div>
-        <div class="stat"><div class="v">3</div><div class="l">компании</div></div>
-        <div class="stat"><div class="v">7</div><div class="l">уровень</div></div>
+      <!-- Achievements -->
+      <div>
+        <div class="sec-label">Ачивки</div>
+        <div class="achievements">
+          <div class="ach">
+            <div class="ach-icon gold">🏆</div>
+            <div class="ach-label">Первый<br>вечер</div>
+          </div>
+          <div class="ach">
+            <div class="ach-icon purple">🎯</div>
+            <div class="ach-label">5<br>сценариев</div>
+          </div>
+          <div class="ach">
+            <div class="ach-icon green">🌿</div>
+            <div class="ach-label">Эко-<br>прогулка</div>
+          </div>
+          <div class="ach">
+            <div class="ach-icon pink">💕</div>
+            <div class="ach-label">Лучшее<br>свидание</div>
+          </div>
+          <div class="ach">
+            <div class="ach-icon blue">🍸</div>
+            <div class="ach-label">Бар-<br>хоппер</div>
+          </div>
+          <div class="ach">
+            <div class="ach-icon amber">⭐</div>
+            <div class="ach-label">Топ<br>автор</div>
+          </div>
+          <div class="ach">
+            <div class="ach-icon locked">🔒</div>
+            <div class="ach-label">Скоро</div>
+          </div>
+          <div class="ach">
+            <div class="ach-icon locked">🔒</div>
+            <div class="ach-label">Скоро</div>
+          </div>
+        </div>
       </div>
 
     </div>
