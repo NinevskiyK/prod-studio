@@ -80,7 +80,7 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 14px;
+    margin-bottom: 6px;
   }
   .greeting h1 {
     font-size: 26px;
@@ -98,6 +98,25 @@
     background: linear-gradient(135deg, var(--lavender), var(--indigo));
     flex: 0 0 auto;
   }
+
+  .location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .location svg { display: block; flex: 0 0 auto; }
+  .location-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .location-text .city {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .location-chevron { margin-left: auto; }
 
   .searchrow {
     display: flex;
@@ -243,9 +262,53 @@
     z-index: 2;
     box-shadow: 0 2px 8px rgba(30, 27, 75, 0.15);
   }
+  .card-actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+  }
+  .action-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(4px);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(30, 27, 75, 0.15);
+    flex: 0 0 auto;
+  }
 
   .card-body {
     padding: 14px 16px 16px;
+  }
+  .card-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .author-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    background: linear-gradient(135deg, #C7D2FE, #818CF8);
+  }
+  .author-avatar.av-green { background: linear-gradient(135deg, #A7F3D0, #34D399); }
+  .author-avatar.av-pink { background: linear-gradient(135deg, #FBCFE8, #F472B6); }
+  .author-avatar.av-amber { background: linear-gradient(135deg, #FDE68A, #D97706); }
+  .author-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
   }
   .card-title {
     font-size: 17px;
@@ -289,6 +352,18 @@
     background: rgba(79, 70, 229, 0.10);
     border-radius: 15px;
   }
+
+  .card-calendar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--indigo);
+    flex: 0 0 auto;
+  }
+  .card-calendar svg { display: block; flex: 0 0 auto; }
 
   /* ---------- Card rating ---------- */
   .card-rating {
@@ -403,8 +478,13 @@
     <!-- Header -->
     <div class="header">
       <div class="greeting">
-        <h1>Лента<span class="logo-dot">.</span></h1>
+        <h1>Лента</h1>
         <div class="avatar"></div>
+      </div>
+      <div class="location">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5C4.93 1.5 3.25 3.18 3.25 5.25 3.25 8.06 7 12.5 7 12.5s3.75-4.44 3.75-7.25C10.75 3.18 9.07 1.5 7 1.5z" fill="#4F46E5"/><circle cx="7" cy="5.25" r="1.5" fill="#fff"/></svg>
+        <span class="location-text"><span class="city">Москва</span>, Люблино</span>
+        <svg class="location-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#6B7280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="searchrow">
         <div class="searchbar">
@@ -434,9 +514,14 @@
       <div class="card">
         <div class="card-photo">
           <span class="cat-pill cat-pink">Свидание</span>
-          <button class="bookmark" aria-label="Сохранить">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          </button>
+          <div class="card-actions">
+            <button class="action-btn" aria-label="Поделиться">
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="10" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><circle cx="14.5" cy="5" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><circle cx="14.5" cy="15" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><path d="M8.1 8.8l4.3-2.5M8.1 11.2l4.3 2.5" stroke="#1E1B4B" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </button>
+            <button class="action-btn" aria-label="Сохранить">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
           <image-slot id="card1" placeholder="фото · романтический ужин у моря" src="https://images.unsplash.com/photo-1542557497-4c7b03d0d245?w=800&q=80"></image-slot>
         </div>
         <div class="card-rating">
@@ -451,6 +536,10 @@
           <span class="rating-count">(124 отзыва)</span>
         </div>
         <div class="card-body">
+          <div class="card-author">
+            <div class="author-avatar av-pink"></div>
+            <span class="author-name">@nightlife_msk</span>
+          </div>
           <div class="card-title">Романтический вечер в центре</div>
           <div class="meta">
             <span class="meta-item">📍 3 места</span>
@@ -459,7 +548,10 @@
           </div>
           <div class="price-row">
             <div class="price-main"><span class="from">от</span> 4 200 ₽ <span class="from">на двоих</span></div>
-            <div class="price-badge">от 2 100 ₽/чел</div>
+            <div class="card-calendar">
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="3" y="4.5" width="14" height="12.5" rx="2.5" stroke="#4F46E5" stroke-width="1.7"/><path d="M3 8h14M6.5 2.5v3M13.5 2.5v3" stroke="#4F46E5" stroke-width="1.7" stroke-linecap="round"/></svg>
+              В календарь
+            </div>
           </div>
         </div>
       </div>
@@ -468,9 +560,14 @@
       <div class="card sponsored">
         <div class="card-photo">
           <span class="cat-pill cat-amber">Спонсорская</span>
-          <button class="bookmark" aria-label="Сохранить">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          </button>
+          <div class="card-actions">
+            <button class="action-btn" aria-label="Поделиться">
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="10" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><circle cx="14.5" cy="5" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><circle cx="14.5" cy="15" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><path d="M8.1 8.8l4.3-2.5M8.1 11.2l4.3 2.5" stroke="#1E1B4B" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </button>
+            <button class="action-btn" aria-label="Сохранить">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
           <image-slot id="ad1" placeholder="шоколадная фабрика" src="https://images.unsplash.com/photo-1610450949065-1f2841536c88?w=800&q=80"></image-slot>
           <div class="sponsored-label">
             <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#8B5E34" stroke-width="1.2"/><path d="M6 5v3M6 3.5v.5" stroke="#8B5E34" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -489,6 +586,10 @@
           <span class="rating-count">(216 отзывов)</span>
         </div>
         <div class="card-body">
+          <div class="card-author">
+            <div class="author-avatar av-amber"></div>
+            <span class="author-name">@shokolatier</span>
+          </div>
           <div class="card-title">Мастер-класс на шоколадной фабрике</div>
           <div class="meta">
             <span class="meta-item">📍 1 место</span>
@@ -497,7 +598,10 @@
           </div>
           <div class="price-row">
             <div class="price-main"><span class="from">от</span> 1 900 ₽ <span class="from">с человека</span></div>
-            <div class="price-badge">все включено</div>
+            <div class="card-calendar">
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="3" y="4.5" width="14" height="12.5" rx="2.5" stroke="#4F46E5" stroke-width="1.7"/><path d="M3 8h14M6.5 2.5v3M13.5 2.5v3" stroke="#4F46E5" stroke-width="1.7" stroke-linecap="round"/></svg>
+              В календарь
+            </div>
           </div>
         </div>
       </div>
@@ -506,9 +610,14 @@
       <div class="card">
         <div class="card-photo">
           <span class="cat-pill cat-indigo">С друзьями</span>
-          <button class="bookmark" aria-label="Сохранить">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          </button>
+          <div class="card-actions">
+            <button class="action-btn" aria-label="Поделиться">
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="10" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><circle cx="14.5" cy="5" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><circle cx="14.5" cy="15" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><path d="M8.1 8.8l4.3-2.5M8.1 11.2l4.3 2.5" stroke="#1E1B4B" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </button>
+            <button class="action-btn" aria-label="Сохранить">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
           <image-slot id="card2" placeholder="фото · друзья веселятся" src="https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=800&q=80"></image-slot>
         </div>
         <div class="card-rating">
@@ -523,6 +632,10 @@
           <span class="rating-count">(87 отзывов)</span>
         </div>
         <div class="card-body">
+          <div class="card-author">
+            <div class="author-avatar"></div>
+            <span class="author-name">@bar_hunter</span>
+          </div>
           <div class="card-title">Лучшие нишевые бары в центре города</div>
           <div class="meta">
             <span class="meta-item">📍 4 места</span>
@@ -531,7 +644,10 @@
           </div>
           <div class="price-row">
             <div class="price-main"><span class="from">от</span> 3 600 ₽ <span class="from">с человека</span></div>
-            <div class="price-badge">группа 4–8</div>
+            <div class="card-calendar">
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="3" y="4.5" width="14" height="12.5" rx="2.5" stroke="#4F46E5" stroke-width="1.7"/><path d="M3 8h14M6.5 2.5v3M13.5 2.5v3" stroke="#4F46E5" stroke-width="1.7" stroke-linecap="round"/></svg>
+              В календарь
+            </div>
           </div>
         </div>
       </div>
@@ -540,9 +656,14 @@
       <div class="card">
         <div class="card-photo">
           <span class="cat-pill cat-green">Прогулка</span>
-          <button class="bookmark" aria-label="Сохранить">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          </button>
+          <div class="card-actions">
+            <button class="action-btn" aria-label="Поделиться">
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="10" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><circle cx="14.5" cy="5" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><circle cx="14.5" cy="15" r="2.2" stroke="#1E1B4B" stroke-width="1.7"/><path d="M8.1 8.8l4.3-2.5M8.1 11.2l4.3 2.5" stroke="#1E1B4B" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </button>
+            <button class="action-btn" aria-label="Сохранить">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
           <image-slot id="card3" placeholder="фото · тропинка в парке" src="https://images.unsplash.com/photo-1501889088093-90b27410d97e?w=800&q=80"></image-slot>
         </div>
         <div class="card-rating">
@@ -557,6 +678,10 @@
           <span class="rating-count">(52 отзыва)</span>
         </div>
         <div class="card-body">
+          <div class="card-author">
+            <div class="author-avatar av-green"></div>
+            <span class="author-name">@ecowalk_ru</span>
+          </div>
           <div class="card-title">Трекинг по дубовому лесу</div>
           <div class="meta">
             <span class="meta-item">📍 2 места</span>
@@ -565,7 +690,10 @@
           </div>
           <div class="price-row">
             <div class="price-main"><span class="from">от</span> 900 ₽ <span class="from">на двоих</span></div>
-            <div class="price-badge">бюджетно</div>
+            <div class="card-calendar">
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="3" y="4.5" width="14" height="12.5" rx="2.5" stroke="#4F46E5" stroke-width="1.7"/><path d="M3 8h14M6.5 2.5v3M13.5 2.5v3" stroke="#4F46E5" stroke-width="1.7" stroke-linecap="round"/></svg>
+              В календарь
+            </div>
           </div>
         </div>
       </div>
@@ -607,7 +735,7 @@
       });
     });
     // Bookmark toggle
-    document.querySelectorAll('.bookmark').forEach(b => {
+    document.querySelectorAll('.action-btn[aria-label="Сохранить"]').forEach(b => {
       b.addEventListener('click', () => {
         const path = b.querySelector('path');
         const filled = path.getAttribute('fill') === '#4F46E5';
