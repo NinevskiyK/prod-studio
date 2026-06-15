@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpenDay — Калькулятор</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --indigo: #4F46E5;
+    --lavender: #818CF8;
+    --bg: #FFFFFF;
+    --card-bg: #F8F8FB;
+    --ink: #1E1B4B;
+    --muted: #6B7280;
+    --green: #10B981;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #E9E9F0;
+    padding: 24px;
+  }
+
+  .screen {
+    position: relative;
+    width: 375px;
+    height: 812px;
+    background: var(--bg);
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -20px rgba(30, 27, 75, 0.35), 0 0 0 11px #111118, 0 0 0 13px #2a2a35;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Status bar ---------- */
+  .statusbar {
+    flex: 0 0 auto;
+    height: 50px;
+    padding: 16px 30px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    z-index: 10;
+  }
+  .statusbar .icons { display: flex; align-items: center; gap: 7px; }
+
+  /* ---------- Header ---------- */
+  .header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 20px 14px;
+  }
+  .back-btn {
+    width: 38px; height: 38px;
+    border-radius: 12px;
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .header h1 {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  /* ---------- Scroll ---------- */
+  .scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+
+  /* ---------- Total input ---------- */
+  .total-card {
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    border-radius: 18px;
+    padding: 20px;
+    text-align: center;
+  }
+  .total-card .lbl {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+  .total-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: inherit;
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .total-card .hint {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  /* ---------- Section label ---------- */
+  .sec-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .sec-head .t { font-size: 16px; font-weight: 800; color: var(--ink); letter-spacing: -0.01em; }
+  .add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    background: transparent;
+    color: var(--indigo);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  /* ---------- Participants ---------- */
+  .people { display: flex; flex-direction: column; gap: 10px; }
+  .person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #EFEFF6;
+    border-radius: 14px;
+    padding: 11px 14px;
+  }
+  .person .ava {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: #fff;
+  }
+  .person .info { flex: 1 1 auto; min-width: 0; }
+  .person .nm { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .person .role { font-size: 12.5px; font-weight: 500; color: var(--muted); margin-top: 1px; }
+  .person .role.paid { color: var(--green); }
+
+  /* iOS toggle */
+  .toggle {
+    flex: 0 0 auto;
+    width: 50px; height: 30px;
+    border-radius: 15px;
+    background: #E2E2EC;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .toggle .knob {
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.18);
+    transition: transform 0.2s ease;
+  }
+  .toggle.on { background: var(--green); }
+  .toggle.on .knob { transform: translateX(20px); }
+
+  /* ---------- Result ---------- */
+  .result {
+    background: var(--indigo);
+    border-radius: 18px;
+    padding: 22px 20px 18px;
+    box-shadow: 0 16px 34px -14px rgba(79,70,229,0.55);
+  }
+  .result .rhead {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+  .result .big {
+    font-size: 40px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .result .big .unit { font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.75); }
+  .result .perlbl {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    margin-top: 6px;
+    margin-bottom: 18px;
+  }
+  .transfers { display: flex; flex-direction: column; gap: 8px; }
+  .transfer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .transfer .who {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+  }
+  .transfer .who .arrow { color: rgba(255,255,255,0.6); }
+  .transfer .who .to { color: #fff; }
+  .transfer .amt { flex: 0 0 auto; font-size: 14px; font-weight: 800; color: #fff; }
+  .transfer .copy {
+    flex: 0 0 auto;
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    background: rgba(255,255,255,0.18);
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .transfer .copy:active { background: rgba(255,255,255,0.32); }
+
+  /* ---------- Bottom ---------- */
+  .footer {
+    flex: 0 0 auto;
+    padding: 14px 20px 30px;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid #F1F1F8;
+    text-align: center;
+  }
+  .share-btn {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 16px;
+    background: var(--indigo);
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    box-shadow: 0 14px 30px -10px rgba(79,70,229,0.55);
+    margin-bottom: 9px;
+  }
+  .footer .fine {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 0.85;
+    z-index: 50;
+  }
+</style>
+</head>
+<body>
+  <div class="screen" data-screen-label="Калькулятор / Calculator">
+
+    <!-- Status bar -->
+    <div class="statusbar">
+      <span>9:41</span>
+      <div class="icons">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1E1B4B"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1E1B4B"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1E1B4B"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#1E1B4B"/></svg>
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><path d="M8.5 2.2c2.5 0 4.8 1 6.5 2.6l1.3-1.4C14.2 1.4 11.5.2 8.5.2S2.8 1.4.7 3.4L2 4.8C3.7 3.2 6 2.2 8.5 2.2z" fill="#1E1B4B"/><path d="M8.5 5.6c1.5 0 2.9.6 3.9 1.6l1.3-1.4c-1.4-1.3-3.2-2.1-5.2-2.1s-3.8.8-5.2 2.1L4.6 7.2c1-1 2.4-1.6 3.9-1.6z" fill="#1E1B4B"/><path d="M8.5 9c.7 0 1.3.3 1.8.7l-1.8 2-1.8-2c.5-.4 1.1-.7 1.8-.7z" fill="#1E1B4B"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.8" width="21" height="10.4" rx="3" stroke="#1E1B4B" stroke-opacity="0.4"/><rect x="2" y="2.3" width="18" height="7.4" rx="1.8" fill="#1E1B4B"/><rect x="23" y="4" width="1.8" height="4" rx="0.9" fill="#1E1B4B" fill-opacity="0.4"/></svg>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <button class="back-btn" aria-label="Назад">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M12.5 4L6.5 10l6 6" stroke="#1E1B4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <h1>Калькулятор расходов</h1>
+    </div>
+
+    <div class="scroll">
+
+      <!-- Total amount -->
+      <div class="total-card">
+        <div class="lbl">Общая сумма</div>
+        <input class="total-input" id="total" type="text" inputmode="numeric" value="4 200 ₽">
+        <div class="hint">Введите итоговую сумму вечера</div>
+      </div>
+
+      <!-- Participants -->
+      <div>
+        <div class="sec-head">
+          <span class="t">Участники</span>
+          <button class="add-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3.5v9M3.5 8h9" stroke="#4F46E5" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Добавить
+          </button>
+        </div>
+        <div class="people">
+          <div class="person">
+            <div class="ava" style="background:linear-gradient(135deg,#818CF8,#4F46E5)">А</div>
+            <div class="info">
+              <div class="nm">Александр</div>
+              <div class="role">Должен внести</div>
+            </div>
+            <div class="toggle" role="switch" aria-label="Уже заплатил"><div class="knob"></div></div>
+          </div>
+          <div class="person">
+            <div class="ava" style="background:linear-gradient(135deg,#34D399,#10B981)">Т</div>
+            <div class="info">
+              <div class="nm">Тимофей</div>
+              <div class="role paid">Уже заплатил</div>
+            </div>
+            <div class="toggle on" role="switch" aria-label="Уже заплатил"><div class="knob"></div></div>
+          </div>
+          <div class="person">
+            <div class="ava" style="background:linear-gradient(135deg,#F472B6,#EC4899)">К</div>
+            <div class="info">
+              <div class="nm">Камиль</div>
+              <div class="role">Должен внести</div>
+            </div>
+            <div class="toggle" role="switch" aria-label="Уже заплатил"><div class="knob"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div class="result">
+        <div class="rhead">Итого</div>
+        <div class="big">2 100 <span class="unit">₽</span></div>
+        <div class="perlbl">на каждого участника</div>
+        <div class="transfers">
+          <div class="transfer">
+            <div class="who">Александр <span class="arrow">→</span> <span class="to">Тимофею</span></div>
+            <div class="amt">2 100 ₽</div>
+            <button class="copy" aria-label="Скопировать">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="8" height="9" rx="1.6" stroke="#fff" stroke-width="1.5"/><path d="M3 11V3a1 1 0 0 1 1-1h7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          <div class="transfer">
+            <div class="who">Камиль <span class="arrow">→</span> <span class="to">Тимофею</span></div>
+            <div class="amt">2 100 ₽</div>
+            <button class="copy" aria-label="Скопировать">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="8" height="9" rx="1.6" stroke="#fff" stroke-width="1.5"/><path d="M3 11V3a1 1 0 0 1 1-1h7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <button class="share-btn">
+        <svg width="19" height="19" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="10" r="2.2" stroke="#fff" stroke-width="1.7"/><circle cx="14.5" cy="5" r="2.2" stroke="#fff" stroke-width="1.7"/><circle cx="14.5" cy="15" r="2.2" stroke="#fff" stroke-width="1.7"/><path d="M8 8.9l4.5-2.6M8 11.1l4.5 2.6" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Поделиться расчётом
+      </button>
+      <div class="fine">Работает без регистрации</div>
+    </div>
+
+    <div class="home-indicator"></div>
+  </div>
+
+  <script>
+    // Toggle switches
+    document.querySelectorAll('.toggle').forEach(t => {
+      t.addEventListener('click', () => {
+        t.classList.toggle('on');
+        const role = t.closest('.person').querySelector('.role');
+        if (t.classList.contains('on')) {
+          role.textContent = 'Уже заплатил';
+          role.classList.add('paid');
+        } else {
+          role.textContent = 'Должен внести';
+          role.classList.remove('paid');
+        }
+      });
+    });
+
+    // Copy buttons
+    document.querySelectorAll('.copy').forEach(c => {
+      c.addEventListener('click', () => {
+        const row = c.closest('.transfer');
+        const txt = row.querySelector('.who').textContent.replace('→','—').trim() + ': ' + row.querySelector('.amt').textContent;
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).catch(()=>{});
+        const orig = c.innerHTML;
+        c.innerHTML = '<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-6.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        setTimeout(() => { c.innerHTML = orig; }, 1200);
+      });
+    });
+
+    // Keep "₽" pinned to the total input
+    const total = document.getElementById('total');
+    total.addEventListener('focus', () => {
+      total.value = total.value.replace(/[^\d\s]/g,'').trim();
+    });
+    total.addEventListener('blur', () => {
+      let v = total.value.replace(/[^\d]/g,'');
+      if (v) total.value = Number(v).toLocaleString('ru-RU').replace(/,/g,' ') + ' ₽';
+    });
+  </script>
+</body>
+</html>

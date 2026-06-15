@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpenDay — Голосование</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="image-slot.js"></script>
+<style>
+  :root {
+    --indigo: #4F46E5;
+    --indigo-soft: #EEF2FF;
+    --lavender: #818CF8;
+    --bg: #FFFFFF;
+    --card-bg: #F8F8FB;
+    --ink: #1E1B4B;
+    --muted: #6B7280;
+    --green: #10B981;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #E9E9F0;
+    padding: 24px;
+  }
+
+  .screen {
+    position: relative;
+    width: 375px;
+    height: 812px;
+    background: var(--bg);
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -20px rgba(30, 27, 75, 0.35), 0 0 0 11px #111118, 0 0 0 13px #2a2a35;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Status bar ---------- */
+  .statusbar {
+    flex: 0 0 auto;
+    height: 50px;
+    padding: 16px 30px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--indigo-soft);
+    z-index: 10;
+  }
+  .statusbar .icons { display: flex; align-items: center; gap: 7px; }
+
+  /* ---------- Scroll ---------- */
+  .scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+
+  /* ---------- Top banner ---------- */
+  .banner {
+    background: var(--indigo-soft);
+    padding: 6px 22px 26px;
+    border-bottom-left-radius: 26px;
+    border-bottom-right-radius: 26px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 18px;
+  }
+  .brand .mark {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    background: var(--indigo);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 14px -4px rgba(79,70,229,0.5);
+  }
+  .brand .name { font-size: 17px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+  .brand .name span { color: var(--indigo); }
+
+  .banner h1 {
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin-bottom: 7px;
+  }
+  .banner .sub {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--indigo);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+  .banner .sub svg { flex: 0 0 auto; }
+
+  /* ---------- Section ---------- */
+  .body-pad { padding: 22px 22px 0; }
+  .section-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 14px;
+  }
+
+  /* ---------- Compact cards ---------- */
+  .cards { display: flex; flex-direction: column; gap: 14px; }
+  .vcard {
+    background: #fff;
+    border: 2px solid #EFEFF6;
+    border-radius: 18px;
+    overflow: hidden;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .vcard.selected {
+    border-color: var(--indigo);
+    box-shadow: 0 14px 30px -14px rgba(79,70,229,0.45);
+  }
+  .vcard-photo { position: relative; height: 120px; width: 100%; }
+  .vcard-photo image-slot { width: 100%; height: 100%; display: block; }
+  .check-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--indigo);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(79,70,229,0.5);
+  }
+  .vcard.selected .check-badge { display: flex; }
+
+  .vcard-body { padding: 14px 16px 16px; }
+  .vcard-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .vcard-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .price-pill {
+    height: 28px;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--indigo);
+    border-radius: 14px;
+  }
+  .duration {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .vote-btn {
+    width: 100%;
+    height: 46px;
+    border: 1.6px solid var(--indigo);
+    border-radius: 13px;
+    background: #fff;
+    color: var(--indigo);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: all 0.16s ease;
+  }
+  .vcard.selected .vote-btn {
+    background: var(--indigo);
+    color: #fff;
+    box-shadow: 0 10px 22px -8px rgba(79,70,229,0.55);
+  }
+  .vote-btn .ico-check { display: none; }
+  .vcard.selected .vote-btn .ico-check { display: block; }
+
+  /* ---------- Voting status ---------- */
+  .status {
+    margin: 24px 22px 0;
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    border-radius: 18px;
+    padding: 18px;
+  }
+  .status .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .status .row .lbl { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .status .row .num { font-size: 13px; font-weight: 600; color: var(--indigo); }
+  .progress {
+    height: 8px;
+    border-radius: 5px;
+    background: #E5E7F2;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .progress .fill {
+    height: 100%;
+    width: 60%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--lavender), var(--indigo));
+  }
+  .avatars { display: flex; align-items: center; }
+  .avatars .ava {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 2.5px solid var(--card-bg);
+    margin-left: -8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .avatars .ava:first-child { margin-left: 0; }
+  .avatars .ava.pending {
+    background: #fff;
+    border: 2px dashed #C7CBDB;
+    color: #B6BAC6;
+  }
+
+  /* ---------- Bottom CTA ---------- */
+  .footer {
+    margin: 26px 22px 30px;
+    text-align: center;
+  }
+  .footer .q {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .download-btn {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 16px;
+    background: var(--indigo);
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    box-shadow: 0 14px 30px -10px rgba(79,70,229,0.55);
+    margin-bottom: 10px;
+  }
+  .footer .fineprint {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .footer .fineprint .dot { width: 3px; height: 3px; border-radius: 50%; background: #CBD0DA; }
+
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 0.85;
+    z-index: 50;
+  }
+</style>
+</head>
+<body>
+  <div class="screen" data-screen-label="Голосование / Voting">
+
+    <!-- Status bar -->
+    <div class="statusbar">
+      <span>9:41</span>
+      <div class="icons">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1E1B4B"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1E1B4B"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1E1B4B"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#1E1B4B"/></svg>
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><path d="M8.5 2.2c2.5 0 4.8 1 6.5 2.6l1.3-1.4C14.2 1.4 11.5.2 8.5.2S2.8 1.4.7 3.4L2 4.8C3.7 3.2 6 2.2 8.5 2.2z" fill="#1E1B4B"/><path d="M8.5 5.6c1.5 0 2.9.6 3.9 1.6l1.3-1.4c-1.4-1.3-3.2-2.1-5.2-2.1s-3.8.8-5.2 2.1L4.6 7.2c1-1 2.4-1.6 3.9-1.6z" fill="#1E1B4B"/><path d="M8.5 9c.7 0 1.3.3 1.8.7l-1.8 2-1.8-2c.5-.4 1.1-.7 1.8-.7z" fill="#1E1B4B"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.8" width="21" height="10.4" rx="3" stroke="#1E1B4B" stroke-opacity="0.4"/><rect x="2" y="2.3" width="18" height="7.4" rx="1.8" fill="#1E1B4B"/><rect x="23" y="4" width="1.8" height="4" rx="0.9" fill="#1E1B4B" fill-opacity="0.4"/></svg>
+      </div>
+    </div>
+
+    <div class="scroll">
+
+      <!-- Banner -->
+      <div class="banner">
+        <div class="brand">
+          <div class="mark">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2.5l2.1 4.6 5 .5-3.7 3.4.9 4.9L10 13.9 5.7 16.3l.9-4.9L2.9 7.6l5-.5L10 2.5z" fill="#fff"/></svg>
+          </div>
+          <div class="name">Spen<span>Day</span></div>
+        </div>
+        <h1>Тимофей предлагает выбрать досуг 👇</h1>
+        <div class="sub">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M6.5 8.5l1.3 1.3 3-3.3" stroke="#4F46E5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="8" r="6.2" stroke="#4F46E5" stroke-width="1.4"/></svg>
+          Проголосуй — регистрация не нужна
+        </div>
+      </div>
+
+      <!-- Cards section -->
+      <div class="body-pad">
+        <div class="section-label">Выберите вариант</div>
+        <div class="cards">
+
+          <!-- Card A -->
+          <div class="vcard" data-vote="a">
+            <div class="vcard-photo">
+              <div class="check-badge">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 8.3l2.6 2.6L12 5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <image-slot id="vote-a" placeholder="фото · ужин в центре" src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&q=80"></image-slot>
+            </div>
+            <div class="vcard-body">
+              <div class="vcard-title">Романтический вечер в центре</div>
+              <div class="vcard-meta">
+                <span class="price-pill">от 1 500 ₽/чел</span>
+                <span class="duration">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#6B7280" stroke-width="1.5"/><path d="M8 4.5V8l2.5 1.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  3–4 часа
+                </span>
+              </div>
+              <button class="vote-btn">
+                <svg class="ico-check" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8.3l2.6 2.6L12 5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="vote-label">Выбрать этот</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card B -->
+          <div class="vcard" data-vote="b">
+            <div class="vcard-photo">
+              <div class="check-badge">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 8.3l2.6 2.6L12 5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <image-slot id="vote-b" placeholder="фото · бар с друзьями" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80"></image-slot>
+            </div>
+            <div class="vcard-body">
+              <div class="vcard-title">Вечеринка по барам</div>
+              <div class="vcard-meta">
+                <span class="price-pill">от 2 200 ₽/чел</span>
+                <span class="duration">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#6B7280" stroke-width="1.5"/><path d="M8 4.5V8l2.5 1.5" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  4–5 часов
+                </span>
+              </div>
+              <button class="vote-btn">
+                <svg class="ico-check" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8.3l2.6 2.6L12 5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="vote-label">Выбрать этот</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Voting status -->
+      <div class="status">
+        <div class="row">
+          <span class="lbl">Проголосовали</span>
+          <span class="num">3 из 5 участников</span>
+        </div>
+        <div class="progress"><div class="fill"></div></div>
+        <div class="avatars">
+          <div class="ava" style="background:linear-gradient(135deg,#818CF8,#4F46E5)">Т</div>
+          <div class="ava" style="background:linear-gradient(135deg,#F472B6,#EC4899)">А</div>
+          <div class="ava" style="background:linear-gradient(135deg,#34D399,#10B981)">М</div>
+          <div class="ava pending">+2</div>
+        </div>
+      </div>
+
+      <!-- Footer CTA -->
+      <div class="footer">
+        <div class="q">Хочешь предложить свой вариант?</div>
+        <button class="download-btn">
+          <svg width="19" height="19" viewBox="0 0 20 20" fill="none"><path d="M10 3v9m0 0l-3.3-3.3M10 12l3.3-3.3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14.5V16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Скачать SpenDay
+        </button>
+        <div class="fineprint">
+          Бесплатно
+          <span class="dot"></span>
+          Без обязательной регистрации
+        </div>
+      </div>
+
+    </div>
+
+    <div class="home-indicator"></div>
+  </div>
+
+  <script>
+    let progressBase = 3, total = 5;
+    const cards = document.querySelectorAll('.vcard');
+    cards.forEach(card => {
+      card.querySelector('.vote-btn').addEventListener('click', () => {
+        const already = card.classList.contains('selected');
+        cards.forEach(c => {
+          c.classList.remove('selected');
+          c.querySelector('.vote-label').textContent = 'Выбрать этот';
+        });
+        const numEl = document.querySelector('.status .num');
+        const fillEl = document.querySelector('.progress .fill');
+        if (!already) {
+          card.classList.add('selected');
+          card.querySelector('.vote-label').textContent = 'Ваш выбор';
+          numEl.textContent = '4 из 5 участников';
+          fillEl.style.width = '80%';
+        } else {
+          numEl.textContent = '3 из 5 участников';
+          fillEl.style.width = '60%';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

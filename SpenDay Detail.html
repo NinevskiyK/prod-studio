@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpenDay — Сценарий</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="image-slot.js"></script>
+<style>
+  :root {
+    --indigo: #4F46E5;
+    --lavender: #818CF8;
+    --bg: #FFFFFF;
+    --card-bg: #F8F8FB;
+    --ink: #1E1B4B;
+    --muted: #6B7280;
+    --pink: #EC4899;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #E9E9F0;
+    padding: 24px;
+  }
+
+  /* ---------- Device screen ---------- */
+  .screen {
+    position: relative;
+    width: 375px;
+    height: 812px;
+    background: var(--bg);
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -20px rgba(30, 27, 75, 0.35), 0 0 0 11px #111118, 0 0 0 13px #2a2a35;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Status bar (overlaid on hero, white) ---------- */
+  .statusbar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 54px;
+    padding: 18px 30px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    z-index: 30;
+  }
+  .statusbar .icons { display: flex; align-items: center; gap: 7px; }
+
+  /* ---------- Scroll area ---------- */
+  .scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    height: 240px;
+    width: 100%;
+  }
+  .hero image-slot { width: 100%; height: 100%; display: block; }
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(30,27,75,0.45) 0%, rgba(30,27,75,0) 28%, rgba(30,27,75,0) 60%, rgba(30,27,75,0.25) 100%);
+    pointer-events: none;
+  }
+  .hero-btn {
+    position: absolute;
+    top: 60px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(30, 27, 75, 0.28);
+    backdrop-filter: blur(8px);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+  }
+  .hero-btn.back { left: 20px; }
+  .hero-btn.share { right: 20px; }
+  .hero-cat {
+    position: absolute;
+    left: 20px;
+    bottom: 34px;
+    height: 30px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 15px;
+    background: var(--pink);
+    z-index: 20;
+    box-shadow: 0 6px 16px -4px rgba(236,72,153,0.5);
+  }
+
+  /* ---------- Content sheet ---------- */
+  .sheet {
+    position: relative;
+    margin-top: -24px;
+    background: var(--bg);
+    border-radius: 24px 24px 0 0;
+    padding: 24px 20px 24px;
+    z-index: 10;
+  }
+
+  .title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+
+  /* Tag pills */
+  .tagrow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .tag {
+    height: 32px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    border-radius: 16px;
+    white-space: nowrap;
+  }
+
+  /* Budget block */
+  .budget {
+    background: var(--indigo);
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-bottom: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 14px 30px -12px rgba(79,70,229,0.55);
+  }
+  .budget .lbl {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 4px;
+  }
+  .budget .big {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+  .budget .perperson {
+    text-align: right;
+  }
+  .budget .perperson .val {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .budget .perperson .sub {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    margin-top: 2px;
+  }
+
+  /* Section header */
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .section-head h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  .step {
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    border-radius: 16px;
+    padding: 13px 12px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+  .step .num {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--indigo);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step .body { flex: 1 1 auto; min-width: 0; }
+  .step .st-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .step .st-desc {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .step .st-price {
+    flex: 0 0 auto;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--indigo);
+    text-align: right;
+    white-space: nowrap;
+    align-self: center;
+    padding-left: 4px;
+  }
+  .step .st-price.free { color: #10B981; }
+
+  /* Reviews */
+  .rating-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .rating-chip .count {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .review {
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    border-radius: 16px;
+    padding: 16px;
+  }
+  .review .top {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 10px;
+  }
+  .review .ava {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--lavender), var(--indigo));
+    flex: 0 0 auto;
+  }
+  .review .who .name { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .review .who .date { font-size: 12px; font-weight: 500; color: var(--muted); margin-top: 1px; }
+  .review .stars { margin-left: auto; display: flex; gap: 2px; }
+  .review .text {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #4B5563;
+    line-height: 1.5;
+  }
+
+  /* ---------- Sticky bottom bar ---------- */
+  .bottombar {
+    flex: 0 0 auto;
+    padding: 14px 20px 30px;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid #F1F1F8;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 40;
+  }
+  .cta {
+    flex: 1 1 auto;
+    height: 52px;
+    border: none;
+    border-radius: 16px;
+    background: var(--indigo);
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    box-shadow: 0 12px 26px -8px rgba(79,70,229,0.55);
+  }
+  .share-link {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--indigo);
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 0.85;
+    z-index: 50;
+  }
+</style>
+</head>
+<body>
+  <div class="screen" data-screen-label="Сценарий / Detail">
+
+    <!-- Status bar -->
+    <div class="statusbar">
+      <span>9:41</span>
+      <div class="icons">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="#fff"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#fff"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#fff"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#fff"/></svg>
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><path d="M8.5 2.2c2.5 0 4.8 1 6.5 2.6l1.3-1.4C14.2 1.4 11.5.2 8.5.2S2.8 1.4.7 3.4L2 4.8C3.7 3.2 6 2.2 8.5 2.2z" fill="#fff"/><path d="M8.5 5.6c1.5 0 2.9.6 3.9 1.6l1.3-1.4c-1.4-1.3-3.2-2.1-5.2-2.1s-3.8.8-5.2 2.1L4.6 7.2c1-1 2.4-1.6 3.9-1.6z" fill="#fff"/><path d="M8.5 9c.7 0 1.3.3 1.8.7l-1.8 2-1.8-2c.5-.4 1.1-.7 1.8-.7z" fill="#fff"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.8" width="21" height="10.4" rx="3" stroke="#fff" stroke-opacity="0.6"/><rect x="2" y="2.3" width="18" height="7.4" rx="1.8" fill="#fff"/><rect x="23" y="4" width="1.8" height="4" rx="0.9" fill="#fff" fill-opacity="0.6"/></svg>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <!-- Hero -->
+      <div class="hero">
+        <button class="hero-btn back" aria-label="Назад">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12.5 4L6.5 10l6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="hero-btn share" aria-label="Поделиться">
+          <svg width="19" height="19" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="10" r="2.4" stroke="#fff" stroke-width="1.7"/><circle cx="14.5" cy="5" r="2.4" stroke="#fff" stroke-width="1.7"/><circle cx="14.5" cy="15" r="2.4" stroke="#fff" stroke-width="1.7"/><path d="M8.1 8.8l4.3-2.5M8.1 11.2l4.3 2.5" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+        <span class="hero-cat">Свидание</span>
+        <image-slot id="detail-hero" placeholder="фото · вечерний город" src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=900&q=80"></image-slot>
+      </div>
+
+      <!-- Content sheet -->
+      <div class="sheet">
+        <h1 class="title">Романтический вечер в центре</h1>
+
+        <div class="tagrow">
+          <span class="tag">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.6" stroke="#4F46E5" stroke-width="1.5"/><path d="M3.5 13c0-2.2 2-3.5 4.5-3.5s4.5 1.3 4.5 3.5" stroke="#4F46E5" stroke-width="1.5" stroke-linecap="round"/></svg>
+            2 человека
+          </span>
+          <span class="tag">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#4F46E5" stroke-width="1.5"/><path d="M8 4.5V8l2.5 1.5" stroke="#4F46E5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            4–5 часов
+          </span>
+          <span class="tag">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5c-2.8 0-5 2.1-5 4.9 0 3.4 5 8.1 5 8.1s5-4.7 5-8.1c0-2.8-2.2-4.9-5-4.9z" stroke="#4F46E5" stroke-width="1.5" stroke-linejoin="round"/><circle cx="8" cy="6.3" r="1.6" stroke="#4F46E5" stroke-width="1.5"/></svg>
+            В городе
+          </span>
+        </div>
+
+        <!-- Budget -->
+        <div class="budget">
+          <div>
+            <div class="lbl">Примерный бюджет</div>
+            <div class="big">от 4 200 ₽</div>
+          </div>
+          <div class="perperson">
+            <div class="val">~2 100 ₽</div>
+            <div class="sub">на человека</div>
+          </div>
+        </div>
+
+        <!-- Steps -->
+        <div class="section-head">
+          <h2>Шаги сценария</h2>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="num">1</div>
+            <div class="body">
+              <div class="st-title">Прогулка по набережной</div>
+              <div class="st-desc">Закатный маршрут</div>
+            </div>
+            <div class="st-price free">бесплатно</div>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <div class="body">
+              <div class="st-title">Ужин в ресторане</div>
+              <div class="st-desc">Уютное место в центре</div>
+            </div>
+            <div class="st-price">от 2 500 ₽</div>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <div class="body">
+              <div class="st-title">Коктейли в баре</div>
+              <div class="st-desc">Авторская карта</div>
+            </div>
+            <div class="st-price">от 1 700 ₽</div>
+          </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="section-head">
+          <h2>Отзывы</h2>
+          <div class="rating-chip">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="#F5A623"><path d="M8 1.5l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.3 4.2 13.3l.7-4.3-3.1-3 4.3-.6L8 1.5z"/></svg>
+            4,8
+            <span class="count">· 124 отзыва</span>
+          </div>
+        </div>
+        <div class="review">
+          <div class="top">
+            <div class="ava"></div>
+            <div class="who">
+              <div class="name">Анна К.</div>
+              <div class="date">12 июня</div>
+            </div>
+            <div class="stars">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="#F5A623"><path d="M8 1.5l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.3 4.2 13.3l.7-4.3-3.1-3 4.3-.6L8 1.5z"/></svg>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="#F5A623"><path d="M8 1.5l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.3 4.2 13.3l.7-4.3-3.1-3 4.3-.6L8 1.5z"/></svg>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="#F5A623"><path d="M8 1.5l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.3 4.2 13.3l.7-4.3-3.1-3 4.3-.6L8 1.5z"/></svg>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="#F5A623"><path d="M8 1.5l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.3 4.2 13.3l.7-4.3-3.1-3 4.3-.6L8 1.5z"/></svg>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="#F5A623"><path d="M8 1.5l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 11.3 4.2 13.3l.7-4.3-3.1-3 4.3-.6L8 1.5z"/></svg>
+            </div>
+          </div>
+          <div class="text">Прекрасный вечер получился! Маршрут продуман до мелочей, ресторан и бар оказались выше всех ожиданий. Обязательно повторим.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky bottom bar -->
+    <div class="bottombar">
+      <button class="cta">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4.5" width="14" height="12.5" rx="2.5" stroke="#fff" stroke-width="1.7"/><path d="M3 8h14M6.5 2.5v3M13.5 2.5v3" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Добавить в календарь
+      </button>
+      <div class="share-link">
+        <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="10" r="2.2" stroke="#4F46E5" stroke-width="1.7"/><circle cx="14.5" cy="5" r="2.2" stroke="#4F46E5" stroke-width="1.7"/><circle cx="14.5" cy="15" r="2.2" stroke="#4F46E5" stroke-width="1.7"/><path d="M8 8.9l4.5-2.6M8 11.1l4.5 2.6" stroke="#4F46E5" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Поделиться
+      </div>
+    </div>
+
+    <div class="home-indicator"></div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.hero-btn.share, .share-link').forEach(el => {
+      el.addEventListener('click', () => {
+        if (navigator.share) navigator.share({ title: 'Романтический вечер в центре' }).catch(()=>{});
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpenDay — Лента</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="image-slot.js"></script>
+<style>
+  :root {
+    --indigo: #4F46E5;
+    --lavender: #818CF8;
+    --bg: #FFFFFF;
+    --card-bg: #F8F8FB;
+    --ink: #1E1B4B;
+    --muted: #6B7280;
+    --pink: #EC4899;
+    --green: #10B981;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #E9E9F0;
+    padding: 24px;
+  }
+
+  /* ---------- Device screen ---------- */
+  .screen {
+    position: relative;
+    width: 375px;
+    height: 812px;
+    background: var(--bg);
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -20px rgba(30, 27, 75, 0.35), 0 0 0 11px #111118, 0 0 0 13px #2a2a35;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Status bar ---------- */
+  .statusbar {
+    flex: 0 0 auto;
+    height: 54px;
+    padding: 18px 30px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    z-index: 10;
+  }
+  .statusbar .icons {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .statusbar svg { display: block; }
+
+  /* ---------- Header / search ---------- */
+  .header {
+    flex: 0 0 auto;
+    padding: 6px 20px 14px;
+    background: var(--bg);
+    z-index: 6;
+  }
+  .greeting {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .greeting h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .greeting .logo-dot {
+    color: var(--indigo);
+  }
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--lavender), var(--indigo));
+    flex: 0 0 auto;
+  }
+
+  .searchrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .searchbar {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 16px;
+    background: var(--card-bg);
+    border-radius: 14px;
+    border: 1px solid #EFEFF6;
+  }
+  .searchbar input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .searchbar input::placeholder { color: var(--muted); }
+  .filter-btn {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--indigo);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 16px -4px rgba(79, 70, 229, 0.5);
+  }
+
+  /* ---------- Tag row ---------- */
+  .tags {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 8px;
+    padding: 4px 20px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: var(--bg);
+    z-index: 5;
+  }
+  .tags::-webkit-scrollbar { display: none; }
+  .tag {
+    flex: 0 0 auto;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tag.active {
+    background: var(--indigo);
+    color: #fff;
+    border-color: var(--indigo);
+    box-shadow: 0 6px 14px -4px rgba(79, 70, 229, 0.5);
+  }
+
+  /* ---------- Feed ---------- */
+  .feed {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding: 4px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .feed::-webkit-scrollbar { display: none; }
+
+  .card {
+    flex: 0 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px -12px rgba(30, 27, 75, 0.18), 0 2px 8px -2px rgba(30, 27, 75, 0.06);
+    border: 1px solid #F1F1F8;
+  }
+
+  .card-photo {
+    position: relative;
+    height: 180px;
+    width: 100%;
+  }
+  .card-photo image-slot {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .cat-pill {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    height: 28px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 14px;
+    backdrop-filter: blur(4px);
+    z-index: 2;
+  }
+  .cat-pink { background: rgba(236, 72, 153, 0.92); }
+  .cat-indigo { background: rgba(79, 70, 229, 0.92); }
+  .cat-green { background: rgba(16, 185, 129, 0.92); }
+
+  .bookmark {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(4px);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(30, 27, 75, 0.15);
+  }
+
+  .card-body {
+    padding: 14px 16px 16px;
+  }
+  .card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 9px;
+    line-height: 1.25;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .meta .dot { width: 3px; height: 3px; border-radius: 50%; background: #CBD0DA; }
+  .meta-item { display: flex; align-items: center; gap: 4px; }
+
+  .price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .price-main {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .price-main .from { font-weight: 500; color: var(--muted); font-size: 13px; }
+  .price-badge {
+    height: 30px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--indigo);
+    background: rgba(79, 70, 229, 0.10);
+    border-radius: 15px;
+  }
+
+  /* ---------- Bottom nav ---------- */
+  .bottomnav {
+    flex: 0 0 auto;
+    height: 86px;
+    padding: 10px 24px 26px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid #F1F1F8;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    z-index: 8;
+  }
+  .navtab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    color: #B6BAC6;
+    font-size: 11px;
+    font-weight: 600;
+    flex: 1;
+    padding-top: 6px;
+  }
+  .navtab.active { color: var(--indigo); }
+
+  /* Home-indicator */
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 0.85;
+    z-index: 20;
+  }
+</style>
+</head>
+<body>
+  <div class="screen" data-screen-label="Лента / Feed">
+
+    <!-- Status bar -->
+    <div class="statusbar">
+      <span>9:41</span>
+      <div class="icons">
+        <!-- signal -->
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1E1B4B"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1E1B4B"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1E1B4B"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#1E1B4B"/></svg>
+        <!-- wifi -->
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><path d="M8.5 2.2c2.5 0 4.8 1 6.5 2.6l1.3-1.4C14.2 1.4 11.5.2 8.5.2S2.8 1.4.7 3.4L2 4.8C3.7 3.2 6 2.2 8.5 2.2z" fill="#1E1B4B"/><path d="M8.5 5.6c1.5 0 2.9.6 3.9 1.6l1.3-1.4c-1.4-1.3-3.2-2.1-5.2-2.1s-3.8.8-5.2 2.1L4.6 7.2c1-1 2.4-1.6 3.9-1.6z" fill="#1E1B4B"/><path d="M8.5 9c.7 0 1.3.3 1.8.7l-1.8 2-1.8-2c.5-.4 1.1-.7 1.8-.7z" fill="#1E1B4B"/></svg>
+        <!-- battery -->
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.8" width="21" height="10.4" rx="3" stroke="#1E1B4B" stroke-opacity="0.4"/><rect x="2" y="2.3" width="18" height="7.4" rx="1.8" fill="#1E1B4B"/><rect x="23" y="4" width="1.8" height="4" rx="0.9" fill="#1E1B4B" fill-opacity="0.4"/></svg>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="greeting">
+        <h1>Лента<span class="logo-dot">.</span></h1>
+        <div class="avatar"></div>
+      </div>
+      <div class="searchrow">
+        <div class="searchbar">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="6.25" stroke="#6B7280" stroke-width="1.6"/><path d="M12.8 12.8L16 16" stroke="#6B7280" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <input type="text" placeholder="Куда собираемся?">
+        </div>
+        <button class="filter-btn" aria-label="Фильтры">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5.5h14M5.5 10h9M8.5 14.5h3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tag row -->
+    <div class="tags">
+      <div class="tag active">Все</div>
+      <div class="tag">Свидание</div>
+      <div class="tag">С друзьями</div>
+      <div class="tag">Прогулка</div>
+      <div class="tag">День рождения</div>
+      <div class="tag">Спонтанный вечер</div>
+    </div>
+
+    <!-- Feed -->
+    <div class="feed">
+
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="card-photo">
+          <span class="cat-pill cat-pink">Свидание</span>
+          <button class="bookmark" aria-label="Сохранить">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </button>
+          <image-slot id="card1" placeholder="фото · вечерний город" src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&q=80"></image-slot>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Романтический вечер в центре</div>
+          <div class="meta">
+            <span class="meta-item">📍 3 места</span>
+            <span class="dot"></span>
+            <span class="meta-item">⏱ 4–5 ч</span>
+          </div>
+          <div class="price-row">
+            <div class="price-main"><span class="from">от</span> 4 200 ₽ <span class="from">на двоих</span></div>
+            <div class="price-badge">от 2 100 ₽/чел</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <div class="card-photo">
+          <span class="cat-pill cat-indigo">С друзьями</span>
+          <button class="bookmark" aria-label="Сохранить">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </button>
+          <image-slot id="card2" placeholder="фото · компания друзей" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80"></image-slot>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Большая вечеринка по городу</div>
+          <div class="meta">
+            <span class="meta-item">📍 4 места</span>
+            <span class="dot"></span>
+            <span class="meta-item">⏱ 5–6 ч</span>
+          </div>
+          <div class="price-row">
+            <div class="price-main"><span class="from">от</span> 3 600 ₽ <span class="from">с человека</span></div>
+            <div class="price-badge">группа 4–8</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 (partially visible) -->
+      <div class="card">
+        <div class="card-photo">
+          <span class="cat-pill cat-green">Прогулка</span>
+          <button class="bookmark" aria-label="Сохранить">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </button>
+          <image-slot id="card3" placeholder="фото · парк" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80"></image-slot>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Неспешная прогулка по набережной</div>
+          <div class="meta">
+            <span class="meta-item">📍 2 места</span>
+            <span class="dot"></span>
+            <span class="meta-item">⏱ 2–3 ч</span>
+          </div>
+          <div class="price-row">
+            <div class="price-main"><span class="from">от</span> 900 ₽ <span class="from">на двоих</span></div>
+            <div class="price-badge">бюджетно</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="bottomnav">
+      <div class="navtab active">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3.5 10.5L12 4l8.5 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-6V20H4.5a1 1 0 0 1-1-1v-8.5z" fill="currentColor"/></svg>
+        <span>Лента</span>
+      </div>
+      <div class="navtab">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.8"/><circle cx="16.5" cy="9" r="2.4" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 19c0-2.8 2.4-4.5 5.5-4.5s5.5 1.7 5.5 4.5M15 14.7c2.6.1 5.5 1.4 5.5 4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Активности</span>
+      </div>
+      <div class="navtab">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.8"/><path d="M5 19.5c0-3.3 3.1-5.5 7-5.5s7 2.2 7 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Профиль</span>
+      </div>
+    </div>
+
+    <div class="home-indicator"></div>
+  </div>
+
+  <script>
+    // Tag selection
+    document.querySelectorAll('.tag').forEach(t => {
+      t.addEventListener('click', () => {
+        document.querySelector('.tag.active')?.classList.remove('active');
+        t.classList.add('active');
+      });
+    });
+    // Bottom nav selection
+    document.querySelectorAll('.navtab').forEach(n => {
+      n.addEventListener('click', () => {
+        document.querySelector('.navtab.active')?.classList.remove('active');
+        n.classList.add('active');
+      });
+    });
+    // Bookmark toggle
+    document.querySelectorAll('.bookmark').forEach(b => {
+      b.addEventListener('click', () => {
+        const path = b.querySelector('path');
+        const filled = path.getAttribute('fill') === '#4F46E5';
+        path.setAttribute('fill', filled ? 'none' : '#4F46E5');
+        path.setAttribute('stroke', filled ? '#1E1B4B' : '#4F46E5');
+      });
+    });
+  </script>
+</body>
+</html>

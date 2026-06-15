@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpenDay — Профиль</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="image-slot.js"></script>
+<style>
+  :root {
+    --indigo: #4F46E5;
+    --lavender: #818CF8;
+    --bg: #FFFFFF;
+    --card-bg: #F8F8FB;
+    --dark: #1E1B4B;
+    --ink: #1E1B4B;
+    --muted: #6B7280;
+    --green: #10B981;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #E9E9F0;
+    padding: 24px;
+  }
+
+  .screen {
+    position: relative;
+    width: 375px;
+    height: 812px;
+    background: var(--bg);
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -20px rgba(30, 27, 75, 0.35), 0 0 0 11px #111118, 0 0 0 13px #2a2a35;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Profile header (dark) ---------- */
+  .phead {
+    flex: 0 0 auto;
+    background: var(--dark);
+    padding: 16px 22px 22px;
+    position: relative;
+  }
+  .phead .statusbar {
+    height: 34px;
+    padding-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .phead .statusbar .icons { display: flex; align-items: center; gap: 7px; }
+
+  .star-btn {
+    position: absolute;
+    top: 56px; right: 22px;
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.10);
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+  }
+
+  .prow {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 16px;
+  }
+  .pava {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border: 2.5px solid rgba(255,255,255,0.15);
+  }
+  .pava image-slot { width: 100%; height: 100%; display: block; }
+  .pinfo .nm { font-size: 21px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+  .pinfo .em { font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,0.55); margin-top: 2px; }
+
+  /* Level / XP */
+  .level {
+    background: rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 12px 14px;
+  }
+  .level .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 9px;
+  }
+  .level .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .level .badge .ic {
+    width: 22px; height: 22px; border-radius: 7px;
+    background: var(--indigo);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .level .xp { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.55); }
+  .level .bar {
+    height: 7px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.12);
+    overflow: hidden;
+  }
+  .level .bar .fill {
+    height: 100%;
+    width: 68%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--lavender), var(--indigo));
+  }
+
+  /* ---------- Scroll ---------- */
+  .scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 18px 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+
+  /* ---------- Calendar ---------- */
+  .cal {
+    background: #fff;
+    border: 1px solid #EFEFF6;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 8px 24px -16px rgba(30,27,75,0.2);
+  }
+  .cal .mhead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .cal .mhead .mn { font-size: 16px; font-weight: 800; color: var(--ink); letter-spacing: -0.01em; }
+  .cal .mhead .navs { display: flex; gap: 6px; }
+  .cal .mhead .nv {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .dow {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 6px;
+  }
+  .dow span {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #B0B4C2;
+    text-transform: uppercase;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+  .day {
+    position: relative;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    border-radius: 10px;
+  }
+  .day.muted { color: #C7CBDB; }
+  .day .dot {
+    position: absolute;
+    bottom: 5px; left: 50%;
+    transform: translateX(-50%);
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--indigo);
+  }
+  .day .check {
+    position: absolute;
+    bottom: 4px; left: 50%;
+    transform: translateX(-50%);
+  }
+  .day.today {
+    background: var(--indigo);
+    color: #fff;
+  }
+  .day.today .dot { background: #fff; }
+  .day.selected {
+    background: rgba(79,70,229,0.10);
+    color: var(--indigo);
+    font-weight: 800;
+  }
+
+  .cal-detail {
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 1px solid #F1F1F8;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cal-detail .cdot { width: 8px; height: 8px; border-radius: 50%; background: var(--indigo); flex: 0 0 auto; }
+  .cal-detail .ctxt { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .cal-detail .ctxt b { font-weight: 800; }
+
+  /* ---------- Upcoming ---------- */
+  .sec-label { font-size: 16px; font-weight: 800; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 12px; }
+  .up-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #fff;
+    border: 1px solid #EFEFF6;
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: 0 8px 24px -16px rgba(30,27,75,0.2);
+  }
+  .up-thumb {
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    flex: 0 0 auto;
+    overflow: hidden;
+  }
+  .up-thumb image-slot { width: 100%; height: 100%; display: block; }
+  .up-body { flex: 1 1 auto; min-width: 0; }
+  .up-title { font-size: 15px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 4px; }
+  .up-meta { font-size: 12.5px; font-weight: 500; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .soon {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    height: 26px;
+    padding: 0 11px;
+    display: flex; align-items: center;
+    font-size: 12px; font-weight: 700; color: #fff;
+    background: var(--indigo);
+    border-radius: 13px;
+  }
+
+  /* ---------- Stats ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .stat {
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    border-radius: 16px;
+    padding: 16px 10px;
+    text-align: center;
+  }
+  .stat .v { font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+  .stat .l { font-size: 11.5px; font-weight: 600; color: var(--muted); margin-top: 3px; }
+
+  /* ---------- Bottom nav ---------- */
+  .bottomnav {
+    flex: 0 0 auto;
+    height: 86px;
+    padding: 10px 24px 26px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid #F1F1F8;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+  }
+  .navtab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    color: #B6BAC6;
+    font-size: 11px;
+    font-weight: 600;
+    flex: 1;
+    padding-top: 6px;
+  }
+  .navtab.active { color: var(--indigo); }
+
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 0.85;
+    z-index: 50;
+  }
+</style>
+</head>
+<body>
+  <div class="screen" data-screen-label="Профиль / Profile">
+
+    <!-- Dark profile header -->
+    <div class="phead">
+      <div class="statusbar">
+        <span>9:41</span>
+        <div class="icons">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="#fff"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#fff"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#fff"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#fff"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><path d="M8.5 2.2c2.5 0 4.8 1 6.5 2.6l1.3-1.4C14.2 1.4 11.5.2 8.5.2S2.8 1.4.7 3.4L2 4.8C3.7 3.2 6 2.2 8.5 2.2z" fill="#fff"/><path d="M8.5 5.6c1.5 0 2.9.6 3.9 1.6l1.3-1.4c-1.4-1.3-3.2-2.1-5.2-2.1s-3.8.8-5.2 2.1L4.6 7.2c1-1 2.4-1.6 3.9-1.6z" fill="#fff"/><path d="M8.5 9c.7 0 1.3.3 1.8.7l-1.8 2-1.8-2c.5-.4 1.1-.7 1.8-.7z" fill="#fff"/></svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.8" width="21" height="10.4" rx="3" stroke="#fff" stroke-opacity="0.6"/><rect x="2" y="2.3" width="18" height="7.4" rx="1.8" fill="#fff"/><rect x="23" y="4" width="1.8" height="4" rx="0.9" fill="#fff" fill-opacity="0.6"/></svg>
+        </div>
+      </div>
+
+      <button class="star-btn" aria-label="Достижения">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.2l2.1 4.6 5 .5-3.8 3.4 1.1 4.9L10 13.5 5.6 16l1.1-4.9L2.9 7.3l5-.5L10 2.2z" fill="#F5A623"/></svg>
+      </button>
+
+      <div class="prow">
+        <div class="pava">
+          <image-slot id="profile-ava" placeholder="фото" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&q=80"></image-slot>
+        </div>
+        <div class="pinfo">
+          <div class="nm">Александр</div>
+          <div class="em"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0968656c714964686065277b7c">[email&#160;protected]</a></div>
+        </div>
+      </div>
+
+      <div class="level">
+        <div class="top">
+          <span class="badge">
+            <span class="ic"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1.5l1.5 3.2 3.5.4-2.6 2.4.7 3.5L7 9.7 3.9 11.4l.7-3.5L2 5.1l3.5-.4L7 1.5z" fill="#fff"/></svg></span>
+            Уровень 7
+          </span>
+          <span class="xp">680 / 1000 XP</span>
+        </div>
+        <div class="bar"><div class="fill"></div></div>
+      </div>
+    </div>
+
+    <div class="scroll">
+
+      <!-- Calendar -->
+      <div class="cal">
+        <div class="mhead">
+          <span class="mn">Июнь 2026</span>
+          <div class="navs">
+            <span class="nv" aria-label="Назад"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3.5L5.5 8l4.5 4.5" stroke="#6B7280" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="nv" aria-label="Вперёд"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3.5L10.5 8 6 12.5" stroke="#6B7280" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+        <div class="dow"><span>пн</span><span>вт</span><span>ср</span><span>чт</span><span>пт</span><span>сб</span><span>вс</span></div>
+        <div class="grid" id="grid"></div>
+
+        <div class="cal-detail">
+          <span class="cdot"></span>
+          <span class="ctxt"><b>12 июня</b> — Бархоппинг с друзьями</span>
+        </div>
+      </div>
+
+      <!-- Upcoming -->
+      <div>
+        <div class="sec-label">Запланировано</div>
+        <div class="up-card">
+          <div class="up-thumb">
+            <image-slot id="profile-up" placeholder="фото" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80"></image-slot>
+          </div>
+          <div class="up-body">
+            <div class="up-title">Бархоппинг по лучшим барам</div>
+            <div class="up-meta">15 июня • С друзьями • от 850 ₽/чел</div>
+          </div>
+          <span class="soon">Скоро</span>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat"><div class="v">12</div><div class="l">вечеров</div></div>
+        <div class="stat"><div class="v">3</div><div class="l">компании</div></div>
+        <div class="stat"><div class="v">7</div><div class="l">уровень</div></div>
+      </div>
+
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="bottomnav">
+      <div class="navtab">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3.5 10.5L12 4l8.5 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-6V20H4.5a1 1 0 0 1-1-1v-8.5z" fill="currentColor"/></svg>
+        <span>Лента</span>
+      </div>
+      <div class="navtab">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.8"/><circle cx="16.5" cy="9" r="2.4" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 19c0-2.8 2.4-4.5 5.5-4.5s5.5 1.7 5.5 4.5M15 14.7c2.6.1 5.5 1.4 5.5 4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Активности</span>
+      </div>
+      <div class="navtab active">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.8"/><path d="M5 19.5c0-3.3 3.1-5.5 7-5.5s7 2.2 7 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Профиль</span>
+      </div>
+    </div>
+
+    <div class="home-indicator"></div>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Build June 2026 calendar. June 1, 2026 is a Monday.
+    // Mon-start grid. June has 30 days. Today = 15. Planned dots: 12,15,21. Completed (past): 3,7,12.
+    const grid = document.getElementById('grid');
+    const planned = {12:1, 15:1, 21:1};
+    const completed = {3:1, 7:1, 12:1};
+    const today = 15;
+    const selected = 12;
+    const firstDow = 1; // Monday (1 = leading blanks before day 1, Mon-start => 0 blanks)
+    const leadBlanks = 0; // June 1 2026 is Monday
+    const daysInMonth = 30;
+
+    // leading days from May (muted)
+    const checkSvg = '<svg class="check" width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6.2l2.6 2.6L10 3" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    for (let i = 0; i < leadBlanks; i++) {
+      const c = document.createElement('div');
+      c.className = 'day muted';
+      grid.appendChild(c);
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const c = document.createElement('div');
+      c.className = 'day';
+      if (d === today) c.classList.add('today');
+      else if (d === selected) c.classList.add('selected');
+      c.innerHTML = '<span>' + d + '</span>';
+      if (completed[d] && d !== today) {
+        c.insertAdjacentHTML('beforeend', checkSvg);
+      } else if (planned[d]) {
+        c.insertAdjacentHTML('beforeend', '<span class="dot"></span>');
+      }
+      grid.appendChild(c);
+    }
+    // trailing days to fill last week
+    const total = leadBlanks + daysInMonth;
+    const trail = (7 - (total % 7)) % 7;
+    for (let i = 1; i <= trail; i++) {
+      const c = document.createElement('div');
+      c.className = 'day muted';
+      c.innerHTML = '<span>' + i + '</span>';
+      grid.appendChild(c);
+    }
+
+    // Day select
+    const detail = document.querySelector('.cal-detail .ctxt');
+    const events = {12:'Бархоппинг с друзьями', 15:'Бархоппинг по лучшим барам', 21:'Прогулка по набережной'};
+    grid.querySelectorAll('.day:not(.muted)').forEach(c => {
+      c.addEventListener('click', () => {
+        grid.querySelector('.day.selected')?.classList.remove('selected');
+        const d = parseInt(c.textContent);
+        if (!c.classList.contains('today')) c.classList.add('selected');
+        if (events[d]) detail.innerHTML = '<b>' + d + ' июня</b> — ' + events[d];
+        else detail.innerHTML = '<b>' + d + ' июня</b> — нет запланированных событий';
+      });
+    });
+
+    // Bottom nav
+    document.querySelectorAll('.navtab').forEach(n => {
+      n.addEventListener('click', () => {
+        document.querySelector('.navtab.active')?.classList.remove('active');
+        n.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

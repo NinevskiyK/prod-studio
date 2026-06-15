@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpenDay — Новый сценарий</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="image-slot.js"></script>
+<style>
+  :root {
+    --indigo: #4F46E5;
+    --lavender: #818CF8;
+    --bg: #FFFFFF;
+    --card-bg: #F8F8FB;
+    --ink: #1E1B4B;
+    --muted: #6B7280;
+    --green: #10B981;
+    --dash: #C7CBDB;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #E9E9F0;
+    padding: 24px;
+  }
+
+  .screen {
+    position: relative;
+    width: 375px;
+    height: 812px;
+    background: var(--bg);
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -20px rgba(30, 27, 75, 0.35), 0 0 0 11px #111118, 0 0 0 13px #2a2a35;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- Status bar ---------- */
+  .statusbar {
+    flex: 0 0 auto;
+    height: 50px;
+    padding: 16px 30px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    z-index: 10;
+  }
+  .statusbar .icons { display: flex; align-items: center; gap: 7px; }
+
+  /* ---------- Header ---------- */
+  .header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 16px 14px;
+    border-bottom: 1px solid #F1F1F8;
+  }
+  .header .h-left { display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    width: 36px; height: 36px;
+    border-radius: 11px;
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .header h1 {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .publish-btn {
+    height: 36px;
+    padding: 0 13px;
+    flex: 0 0 auto;
+    border: none;
+    border-radius: 11px;
+    background: var(--indigo);
+    color: #fff;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 14px -4px rgba(79,70,229,0.5);
+  }
+
+  /* ---------- Scroll ---------- */
+  .scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px 20px 20px;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+
+  /* ---------- Cover ---------- */
+  .cover {
+    position: relative;
+    height: 240px;
+    border-radius: 16px;
+    border: 2px dashed var(--dash);
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    margin-bottom: 22px;
+    overflow: hidden;
+  }
+  .cover .cam {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #EFEFF6;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(30,27,75,0.06);
+  }
+  .cover .cap { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .cover .cap-sub { font-size: 12.5px; font-weight: 500; color: var(--muted); margin-top: -6px; }
+
+
+  /* ---------- Title input ---------- */
+  .title-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: inherit;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    padding: 2px 0;
+  }
+  .title-input::placeholder { color: #C2C5D2; }
+
+  /* ---------- Tags ---------- */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 26px;
+  }
+  .pill {
+    height: 34px;
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 700;
+    border-radius: 17px;
+    cursor: pointer;
+  }
+  .pill.filled {
+    background: var(--indigo);
+    color: #fff;
+  }
+  .pill.filled .x { opacity: 0.7; display: flex; }
+  .pill.add {
+    background: transparent;
+    color: var(--indigo);
+    border: 1.6px dashed var(--lavender);
+  }
+
+  /* ---------- Section ---------- */
+  .sec-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .sec-head .t { font-size: 17px; font-weight: 800; color: var(--ink); letter-spacing: -0.01em; }
+  .sec-head .count { font-size: 13px; font-weight: 600; color: var(--muted); }
+
+  /* ---------- Step cards ---------- */
+  .steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    border-radius: 16px;
+    padding: 14px 14px 14px 10px;
+  }
+  .handle {
+    flex: 0 0 auto;
+    width: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+    cursor: grab;
+    padding: 4px 0;
+  }
+  .handle span { width: 14px; height: 2px; border-radius: 1px; background: #C7CBDB; }
+  .step .num-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--indigo);
+    background: rgba(79,70,229,0.1);
+    padding: 3px 8px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .step .body { flex: 1 1 auto; min-width: 0; }
+  .step .st-title {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 3px;
+    line-height: 1.25;
+  }
+  .step .st-price { font-size: 13px; font-weight: 700; color: var(--indigo); }
+  .step .st-price.free { color: var(--green); }
+  .step .acts { flex: 0 0 auto; display: flex; gap: 6px; }
+  .act {
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    background: #fff;
+    border: 1px solid #EFEFF6;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  /* ---------- Add step ---------- */
+  .add-step {
+    border: 1.8px dashed var(--dash);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .add-step .lead {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .add-step .opts { display: flex; gap: 10px; }
+  .add-opt {
+    flex: 1 1 0;
+    height: 44px;
+    border-radius: 12px;
+    border: none;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .add-opt.primary { background: var(--indigo); color: #fff; }
+  .add-opt.ghost { background: #fff; color: var(--indigo); border: 1.4px solid #DDDCF5; }
+
+  /* ---------- Summary sticky ---------- */
+  .summary {
+    flex: 0 0 auto;
+    background: #F8F8FF;
+    border-top: 1px solid #ECECF8;
+    padding: 16px 20px 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .summary .calc-ico {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: rgba(79,70,229,0.1);
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 auto;
+  }
+  .summary .stxt { flex: 1 1 auto; min-width: 0; }
+  .summary .stxt .lbl { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 1px; }
+  .summary .stxt .val {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .summary .stxt .val .dot { width: 3px; height: 3px; border-radius: 50%; background: #C0C3D2; }
+  .summary .stxt .val .dur { font-weight: 600; color: var(--muted); font-size: 14px; }
+
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 0.85;
+    z-index: 50;
+  }
+</style>
+</head>
+<body>
+  <div class="screen" data-screen-label="Конструктор / Builder">
+
+    <!-- Status bar -->
+    <div class="statusbar">
+      <span>9:41</span>
+      <div class="icons">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1E1B4B"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1E1B4B"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1E1B4B"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#1E1B4B"/></svg>
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><path d="M8.5 2.2c2.5 0 4.8 1 6.5 2.6l1.3-1.4C14.2 1.4 11.5.2 8.5.2S2.8 1.4.7 3.4L2 4.8C3.7 3.2 6 2.2 8.5 2.2z" fill="#1E1B4B"/><path d="M8.5 5.6c1.5 0 2.9.6 3.9 1.6l1.3-1.4c-1.4-1.3-3.2-2.1-5.2-2.1s-3.8.8-5.2 2.1L4.6 7.2c1-1 2.4-1.6 3.9-1.6z" fill="#1E1B4B"/><path d="M8.5 9c.7 0 1.3.3 1.8.7l-1.8 2-1.8-2c.5-.4 1.1-.7 1.8-.7z" fill="#1E1B4B"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.8" width="21" height="10.4" rx="3" stroke="#1E1B4B" stroke-opacity="0.4"/><rect x="2" y="2.3" width="18" height="7.4" rx="1.8" fill="#1E1B4B"/><rect x="23" y="4" width="1.8" height="4" rx="0.9" fill="#1E1B4B" fill-opacity="0.4"/></svg>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="h-left">
+        <button class="icon-btn" aria-label="Закрыть">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#1E1B4B" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <h1>Новый сценарий</h1>
+      </div>
+      <button class="publish-btn">Опубликовать</button>
+    </div>
+
+    <div class="scroll">
+
+      <!-- Cover -->
+      <div class="cover">
+        <div class="cam">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 8.5a2 2 0 0 1 2-2h1.2l1-1.6a1 1 0 0 1 .85-.47h5.9a1 1 0 0 1 .85.47l1 1.6H18a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8z" stroke="#4F46E5" stroke-width="1.6"/><circle cx="12" cy="12.5" r="3.2" stroke="#4F46E5" stroke-width="1.6"/></svg>
+        </div>
+        <div class="cap">Добавить обложку</div>
+        <div class="cap-sub">JPG или PNG • до 10 МБ</div>
+      </div>
+
+      <!-- Title -->
+      <input class="title-input" type="text" placeholder="Название сценария...">
+
+      <!-- Tags -->
+      <div class="tags">
+        <span class="pill filled">Свидание <svg class="x" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <span class="pill filled">2 человека <svg class="x" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <span class="pill add">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3 7h8" stroke="#4F46E5" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Добавить тег
+        </span>
+      </div>
+
+      <!-- Steps -->
+      <div class="sec-head">
+        <span class="t">Шаги сценария</span>
+        <span class="count">2 шага</span>
+      </div>
+      <div class="steps">
+
+        <div class="step">
+          <div class="handle"><span></span><span></span><span></span></div>
+          <div class="body">
+            <span class="num-tag">Шаг 1</span>
+            <div class="st-title">Прогулка по набережной</div>
+            <div class="st-price free">бесплатно</div>
+          </div>
+          <div class="acts">
+            <button class="act" aria-label="Изменить"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10.5 2.8l2.7 2.7-7.4 7.4-3.1.4.4-3.1 7.4-7.4z" stroke="#6B7280" stroke-width="1.4" stroke-linejoin="round"/></svg></button>
+            <button class="act" aria-label="Удалить"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.5 4.5V3.2a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1.3M4.5 4.5l.6 8a1 1 0 0 0 1 .9h3.8a1 1 0 0 0 1-.9l.6-8" stroke="#E0556E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="handle"><span></span><span></span><span></span></div>
+          <div class="body">
+            <span class="num-tag">Шаг 2</span>
+            <div class="st-title">Ужин в ресторане</div>
+            <div class="st-price">от 2 500 ₽ на двоих</div>
+          </div>
+          <div class="acts">
+            <button class="act" aria-label="Изменить"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10.5 2.8l2.7 2.7-7.4 7.4-3.1.4.4-3.1 7.4-7.4z" stroke="#6B7280" stroke-width="1.4" stroke-linejoin="round"/></svg></button>
+            <button class="act" aria-label="Удалить"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.5 4.5V3.2a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1.3M4.5 4.5l.6 8a1 1 0 0 0 1 .9h3.8a1 1 0 0 0 1-.9l.6-8" stroke="#E0556E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Add step -->
+      <div class="add-step">
+        <div class="lead">
+          <svg width="17" height="17" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.2" stroke="#1E1B4B" stroke-width="1.5"/><path d="M9 6v6M6 9h6" stroke="#1E1B4B" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Добавить шаг
+        </div>
+        <div class="opts">
+          <button class="add-opt primary">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+            Создать новый
+          </button>
+          <button class="add-opt ghost">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7.2" cy="7.2" r="4.6" stroke="#4F46E5" stroke-width="1.5"/><path d="M10.8 10.8L14 14" stroke="#4F46E5" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Найти в базе
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Summary -->
+    <div class="summary">
+      <div class="calc-ico">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="2.5" width="13" height="15" rx="2.5" stroke="#4F46E5" stroke-width="1.5"/><path d="M6.5 6h7" stroke="#4F46E5" stroke-width="1.5" stroke-linecap="round"/><path d="M6.5 10h2M11.5 10h2M6.5 13.5h2M11.5 13.5h2" stroke="#4F46E5" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="stxt">
+        <div class="lbl">Итого по шагам</div>
+        <div class="val">
+          от 4 200 ₽
+          <span class="dot"></span>
+          <span class="dur">4–5 часов</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-indicator"></div>
+  </div>
+
+  <script>
+    // Delete step
+    document.querySelectorAll('.act[aria-label="Удалить"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const step = btn.closest('.step');
+        step.style.transition = 'opacity .15s, transform .15s';
+        step.style.opacity = '0';
+        step.style.transform = 'scale(0.97)';
+        setTimeout(() => {
+          step.remove();
+          renumber();
+        }, 150);
+      });
+    });
+    function renumber() {
+      const steps = document.querySelectorAll('.steps .step');
+      steps.forEach((s, i) => { s.querySelector('.num-tag').textContent = 'Шаг ' + (i + 1); });
+      document.querySelector('.sec-head .count').textContent = steps.length + (steps.length === 1 ? ' шаг' : ' шага');
+    }
+    // Remove tag
+    document.querySelectorAll('.pill.filled .x').forEach(x => {
+      x.addEventListener('click', (e) => { e.stopPropagation(); x.closest('.pill').remove(); });
+    });
+  </script>
+</body>
+</html>
