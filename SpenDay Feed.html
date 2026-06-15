@@ -290,6 +290,30 @@
     border-radius: 15px;
   }
 
+  /* ---------- Card rating ---------- */
+  .card-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px 0;
+  }
+  .rating-stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .rating-stars svg { display: block; }
+  .rating-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .rating-count {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
   /* ---------- Bottom nav ---------- */
   .bottomnav {
     flex: 0 0 auto;
@@ -387,6 +411,17 @@
           </button>
           <image-slot id="card1" placeholder="фото · вечерний город" src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&q=80"></image-slot>
         </div>
+        <div class="card-rating">
+          <div class="rating-stars">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#E5E7EB"/></svg>
+          </div>
+          <span class="rating-value">4.8</span>
+          <span class="rating-count">(124 отзыва)</span>
+        </div>
         <div class="card-body">
           <div class="card-title">Романтический вечер в центре</div>
           <div class="meta">
@@ -410,6 +445,17 @@
           </button>
           <image-slot id="card2" placeholder="фото · компания друзей" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80"></image-slot>
         </div>
+        <div class="card-rating">
+          <div class="rating-stars">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+          </div>
+          <span class="rating-value">4.9</span>
+          <span class="rating-count">(87 отзывов)</span>
+        </div>
         <div class="card-body">
           <div class="card-title">Большая вечеринка по городу</div>
           <div class="meta">
@@ -432,6 +478,17 @@
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
           </button>
           <image-slot id="card3" placeholder="фото · парк" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80"></image-slot>
+        </div>
+        <div class="card-rating">
+          <div class="rating-stars">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#E5E7EB"/></svg>
+          </div>
+          <span class="rating-value">4.6</span>
+          <span class="rating-count">(52 отзыва)</span>
         </div>
         <div class="card-body">
           <div class="card-title">Неспешная прогулка по набережной</div>
