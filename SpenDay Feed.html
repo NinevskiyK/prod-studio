@@ -91,12 +91,30 @@
   .greeting .logo-dot {
     color: var(--indigo);
   }
-  .avatar {
+  .notif-btn {
+    position: relative;
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--lavender), var(--indigo));
+    background: var(--card-bg);
+    border: 1px solid #EFEFF6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
     flex: 0 0 auto;
+    transition: background 0.15s ease;
+  }
+  .notif-btn:active { background: #EFEFF6; }
+  .notif-dot {
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #EF4444;
+    border: 2px solid #fff;
   }
 
   .location {
@@ -193,6 +211,28 @@
     border-color: var(--indigo);
     box-shadow: 0 6px 14px -4px rgba(79, 70, 229, 0.5);
   }
+
+  /* ---------- Card badges ---------- */
+  .card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    height: 24px;
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    z-index: 2;
+  }
+  .card-badge svg { display: block; flex: 0 0 auto; }
+  .badge-popular { background: rgba(245, 158, 11, 0.9); }
+  .badge-new { background: rgba(16, 185, 129, 0.9); }
+  .card-badge + .cat-pill { top: 40px; }
 
   /* ---------- Feed ---------- */
   .feed {
@@ -479,7 +519,10 @@
     <div class="header">
       <div class="greeting">
         <h1>Лента</h1>
-        <div class="avatar"></div>
+        <button class="notif-btn" aria-label="Уведомления">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9z" stroke="#1E1B4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#1E1B4B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="notif-dot"></span>
+        </button>
       </div>
       <div class="location">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5C4.93 1.5 3.25 3.18 3.25 5.25 3.25 8.06 7 12.5 7 12.5s3.75-4.44 3.75-7.25C10.75 3.18 9.07 1.5 7 1.5z" fill="#4F46E5"/><circle cx="7" cy="5.25" r="1.5" fill="#fff"/></svg>
@@ -513,6 +556,10 @@
       <!-- Card 1 -->
       <div class="card">
         <div class="card-photo">
+          <span class="card-badge badge-popular">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.8 4.3 4.6.5-3.5 3.1 1 4.6L8 12.2 4.1 14.5l1-4.6L1.6 6.8l4.6-.5L8 2z" fill="#fff"/></svg>
+            Популярное
+          </span>
           <span class="cat-pill cat-pink">Свидание</span>
           <div class="card-actions">
             <button class="action-btn" aria-label="Поделиться">
@@ -609,6 +656,10 @@
       <!-- Card 2 -->
       <div class="card">
         <div class="card-photo">
+          <span class="card-badge badge-new">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#fff" stroke-width="1.5"/><path d="M8 4.5V8l2.5 1.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Новое
+          </span>
           <span class="cat-pill cat-indigo">С друзьями</span>
           <div class="card-actions">
             <button class="action-btn" aria-label="Поделиться">
