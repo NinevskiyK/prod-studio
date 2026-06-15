@@ -314,6 +314,34 @@
     color: var(--muted);
   }
 
+  /* ---------- Sponsored card ---------- */
+  .card.sponsored {
+    border: 1.5px solid rgba(180, 120, 60, 0.35);
+    box-shadow: 0 10px 30px -12px rgba(120, 70, 20, 0.18), 0 2px 8px -2px rgba(120, 70, 20, 0.08);
+  }
+  .cat-amber {
+    background: rgba(180, 110, 40, 0.92);
+  }
+  .sponsored-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #8B5E34;
+    background: rgba(255, 247, 235, 0.92);
+    backdrop-filter: blur(4px);
+    z-index: 2;
+  }
+  .sponsored-label svg { display: block; }
+
   /* ---------- Bottom nav ---------- */
   .bottomnav {
     flex: 0 0 auto;
@@ -409,7 +437,7 @@
           <button class="bookmark" aria-label="Сохранить">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
           </button>
-          <image-slot id="card1" placeholder="фото · вечерний город" src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&q=80"></image-slot>
+          <image-slot id="card1" placeholder="фото · романтический ужин у моря" src="https://images.unsplash.com/photo-1542557497-4c7b03d0d245?w=800&q=80"></image-slot>
         </div>
         <div class="card-rating">
           <div class="rating-stars">
@@ -436,6 +464,44 @@
         </div>
       </div>
 
+      <!-- Sponsored card -->
+      <div class="card sponsored">
+        <div class="card-photo">
+          <span class="cat-pill cat-amber">Спонсорская</span>
+          <button class="bookmark" aria-label="Сохранить">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </button>
+          <image-slot id="ad1" placeholder="шоколадная фабрика" src="https://images.unsplash.com/photo-1610450949065-1f2841536c88?w=800&q=80"></image-slot>
+          <div class="sponsored-label">
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#8B5E34" stroke-width="1.2"/><path d="M6 5v3M6 3.5v.5" stroke="#8B5E34" stroke-width="1.4" stroke-linecap="round"/></svg>
+            Реклама · shokolatier.ru
+          </div>
+        </div>
+        <div class="card-rating">
+          <div class="rating-stars">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.76 4.12 4.44.42-3.36 2.96 1 4.34L8 11.12l-3.84 2.22 1-4.34L1.8 6.04l4.44-.42L8 1.5z" fill="#FBBF24"/></svg>
+          </div>
+          <span class="rating-value">4.9</span>
+          <span class="rating-count">(216 отзывов)</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Мастер-класс на шоколадной фабрике</div>
+          <div class="meta">
+            <span class="meta-item">📍 1 место</span>
+            <span class="dot"></span>
+            <span class="meta-item">⏱ 2 ч</span>
+          </div>
+          <div class="price-row">
+            <div class="price-main"><span class="from">от</span> 1 900 ₽ <span class="from">с человека</span></div>
+            <div class="price-badge">все включено</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Card 2 -->
       <div class="card">
         <div class="card-photo">
@@ -443,7 +509,7 @@
           <button class="bookmark" aria-label="Сохранить">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
           </button>
-          <image-slot id="card2" placeholder="фото · компания друзей" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80"></image-slot>
+          <image-slot id="card2" placeholder="фото · друзья веселятся" src="https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=800&q=80"></image-slot>
         </div>
         <div class="card-rating">
           <div class="rating-stars">
@@ -457,7 +523,7 @@
           <span class="rating-count">(87 отзывов)</span>
         </div>
         <div class="card-body">
-          <div class="card-title">Большая вечеринка по городу</div>
+          <div class="card-title">Лучшие нишевые бары в центре города</div>
           <div class="meta">
             <span class="meta-item">📍 4 места</span>
             <span class="dot"></span>
@@ -477,7 +543,7 @@
           <button class="bookmark" aria-label="Сохранить">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z" stroke="#1E1B4B" stroke-width="1.5" stroke-linejoin="round"/></svg>
           </button>
-          <image-slot id="card3" placeholder="фото · парк" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80"></image-slot>
+          <image-slot id="card3" placeholder="фото · тропинка в парке" src="https://images.unsplash.com/photo-1501889088093-90b27410d97e?w=800&q=80"></image-slot>
         </div>
         <div class="card-rating">
           <div class="rating-stars">
@@ -491,7 +557,7 @@
           <span class="rating-count">(52 отзыва)</span>
         </div>
         <div class="card-body">
-          <div class="card-title">Неспешная прогулка по набережной</div>
+          <div class="card-title">Трекинг по дубовому лесу</div>
           <div class="meta">
             <span class="meta-item">📍 2 места</span>
             <span class="dot"></span>
