@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpenDay — Готовые сценарии досуга с понятным бюджетом</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --indigo: #4F46E5;
+    --indigo-dark: #3730A3;
+    --lavender: #818CF8;
+    --bg: #FFFFFF;
+    --card-bg: #F8F8FB;
+    --ink: #1E1B4B;
+    --muted: #6B7280;
+    --pink: #EC4899;
+    --green: #10B981;
+    --amber: #F59E0B;
+    --section-bg: #F5F5FA;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; color: var(--ink); background: var(--bg); overflow-x: hidden; }
+
+  /* Navigation */
+  .topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; background: rgba(255,255,255,0.88); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.06); transition: box-shadow 0.3s; }
+  .topnav.scrolled { box-shadow: 0 4px 24px rgba(30,27,75,0.08); }
+  .topnav-logo { font-size: 22px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; text-decoration: none; }
+  .topnav-logo span { color: var(--indigo); }
+  .topnav-links { display: flex; align-items: center; gap: 32px; }
+  .topnav-links a { font-size: 14px; font-weight: 600; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .topnav-links a:hover { color: var(--ink); }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 28px; background: var(--indigo); color: #fff; font-family: inherit; font-size: 15px; font-weight: 700; border: none; border-radius: 14px; cursor: pointer; text-decoration: none; box-shadow: 0 6px 20px -4px rgba(79,70,229,0.5); transition: transform 0.15s, box-shadow 0.15s; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px -4px rgba(79,70,229,0.55); }
+  .btn-secondary { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 28px; background: var(--card-bg); color: var(--ink); font-family: inherit; font-size: 15px; font-weight: 700; border: 1px solid #EFEFF6; border-radius: 14px; cursor: pointer; text-decoration: none; transition: background 0.15s; }
+  .btn-secondary:hover { background: #EFEFF6; }
+
+  /* Sections common */
+  section { padding: 100px 48px; }
+  .section-tag { display: inline-flex; align-items: center; height: 32px; padding: 0 14px; background: rgba(79,70,229,0.08); border-radius: 16px; font-size: 13px; font-weight: 700; color: var(--indigo); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .section-header { text-align: center; max-width: 700px; margin: 0 auto 64px; }
+  .section-header h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 16px; }
+  .section-header p { font-size: 17px; line-height: 1.6; color: var(--muted); }
+
+  /* ===== HERO (Slide 1) ===== */
+  .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 120px 48px 80px; background: linear-gradient(170deg, #1E1B4B 0%, #312E81 50%, #1E1B4B 100%); position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(129,140,248,0.15) 0%, transparent 70%); }
+  .hero-inner { max-width: 1200px; width: 100%; display: flex; align-items: center; gap: 80px; position: relative; z-index: 1; }
+  .hero-text { flex: 1; max-width: 560px; }
+  .hero-sub { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px; }
+  .hero h1 { font-size: 56px; font-weight: 900; line-height: 1.08; letter-spacing: -0.03em; color: #fff; margin-bottom: 12px; }
+  .hero h1 .accent { color: var(--lavender); }
+  .hero-tagline { font-size: 20px; line-height: 1.5; color: rgba(255,255,255,0.7); margin-bottom: 16px; font-weight: 500; }
+  .hero p { font-size: 17px; line-height: 1.6; color: rgba(255,255,255,0.5); margin-bottom: 36px; max-width: 460px; }
+  .hero-buttons { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .btn-white { display: inline-flex; align-items: center; justify-content: center; height: 52px; padding: 0 32px; background: #fff; color: var(--indigo); font-family: inherit; font-size: 16px; font-weight: 700; border: none; border-radius: 14px; cursor: pointer; text-decoration: none; box-shadow: 0 6px 20px rgba(0,0,0,0.1); transition: transform 0.15s; }
+  .btn-white:hover { transform: translateY(-2px); }
+  .btn-ghost { display: inline-flex; align-items: center; justify-content: center; height: 52px; padding: 0 32px; background: rgba(255,255,255,0.1); color: #fff; font-family: inherit; font-size: 16px; font-weight: 700; border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; cursor: pointer; text-decoration: none; transition: background 0.15s; }
+  .btn-ghost:hover { background: rgba(255,255,255,0.2); }
+
+  /* Phone mockup — hero */
+  .hero-phone { flex: 0 0 auto; position: relative; }
+  .phone-iframe-wrap {
+    width: 280px; height: 585px;
+    position: relative; overflow: hidden;
+    background: #1E1B4B;
+    border-radius: 31px;
+  }
+  .phone-iframe-wrap iframe {
+    width: 401px; height: 838px;
+    border: none; display: block;
+    transform: scale(0.698); transform-origin: top left;
+  }
+  .phone-glow {
+    position: absolute; width: 360px; height: 360px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(79,70,229,0.2) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1;
+  }
+
+  /* ===== PROBLEM (Slides 1-2) ===== */
+  .problem { background: var(--section-bg); }
+  .problem-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .problem-story { }
+  .problem-label { font-size: 13px; font-weight: 700; color: var(--indigo); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+  .problem-story h3 { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 24px; }
+  .bubbles { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+  .bubble { padding: 14px 20px; border-radius: 18px; font-size: 15px; font-weight: 500; line-height: 1.45; max-width: 420px; }
+  .bubble.gray { background: #fff; color: var(--ink); border: 1px solid #EFEFF6; }
+  .bubble.purple { background: var(--indigo); color: #fff; }
+  .result-box { background: var(--ink); border-radius: 18px; padding: 24px 28px; color: #fff; max-width: 320px; }
+  .result-box .rlbl { font-size: 12px; font-weight: 700; color: var(--lavender); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .result-box .big { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
+  .result-box .rdesc { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 14px; }
+  .result-box .rline { height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 14px; }
+  .result-box .ritem { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.8); }
+
+  .problem-visual { display: flex; flex-direction: column; gap: 16px; }
+  .overload-banner { background: var(--ink); border-radius: 20px; padding: 28px 32px; color: #fff; }
+  .overload-banner h4 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+  .overload-banner p { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+  .overload-banner .pill { display: inline-flex; align-items: center; height: 32px; padding: 0 14px; background: rgba(129,140,248,0.2); border-radius: 16px; font-size: 13px; font-weight: 700; color: var(--lavender); margin-top: 14px; }
+  .alt-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .alt-card { background: #fff; border: 1px solid #EFEFF6; border-radius: 14px; padding: 16px 14px; text-align: center; }
+  .alt-card .alt-name { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .alt-card .alt-desc { font-size: 11px; color: var(--muted); }
+
+  /* ===== TARGET AUDIENCE (Slides 3-5) ===== */
+  .audience { background: #fff; }
+  .audience-cards { max-width: 1100px; margin: 0 auto 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .aud-card { background: var(--card-bg); border: 1px solid #EFEFF6; border-radius: 20px; padding: 32px 28px; }
+  .aud-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; font-size: 22px; }
+  .aud-icon.ai-pink { background: rgba(236,72,153,0.1); }
+  .aud-icon.ai-purple { background: rgba(79,70,229,0.1); }
+  .aud-icon.ai-green { background: rgba(16,185,129,0.1); }
+  .aud-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .aud-card p { font-size: 14px; line-height: 1.55; color: var(--muted); }
+  .audience-bottom { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .aud-main-box { background: var(--card-bg); border: 1px solid #EFEFF6; border-radius: 20px; padding: 32px; display: flex; align-items: center; gap: 24px; }
+  .aud-age { width: 72px; height: 72px; border-radius: 50%; background: var(--indigo); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
+  .aud-age .top { font-size: 18px; font-weight: 800; line-height: 1; }
+  .aud-age .bot { font-size: 18px; font-weight: 800; line-height: 1; opacity: 0.6; }
+  .aud-main-box h4 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .aud-main-box .sub { font-size: 14px; color: var(--muted); }
+  .aud-sam { background: var(--ink); border-radius: 20px; padding: 32px; color: #fff; display: flex; flex-direction: column; justify-content: center; }
+  .aud-sam .sam-label { font-size: 12px; font-weight: 700; color: var(--lavender); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .aud-sam .sam-val { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+  .aud-sam .sam-desc { font-size: 14px; color: rgba(255,255,255,0.6); }
+  .main-insight { max-width: 1100px; margin: 24px auto 0; background: rgba(79,70,229,0.06); border-radius: 16px; padding: 20px 28px; display: flex; align-items: center; gap: 14px; }
+  .main-insight .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--indigo); flex-shrink: 0; }
+  .main-insight p { font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.5; }
+
+  /* ===== PRODUCT UX (Slides 6-9) ===== */
+  .product { background: var(--section-bg); }
+  .product-row { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-bottom: 80px; }
+  .product-row:last-child { margin-bottom: 0; }
+  .product-row.reverse { direction: rtl; }
+  .product-row.reverse > * { direction: ltr; }
+  .product-info h3 { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .product-info p { font-size: 16px; line-height: 1.6; color: var(--muted); margin-bottom: 20px; }
+  .product-points { display: flex; flex-direction: column; gap: 10px; }
+  .product-point { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 500; color: var(--ink); }
+  .product-point .pp-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .pp-pink { background: var(--pink); }
+  .pp-blue { background: var(--indigo); }
+  .pp-black { background: var(--ink); }
+  .pp-green { background: var(--green); }
+
+  /* Screen mockups */
+  .screen-mock-wrap { display: flex; justify-content: center; }
+  .screen-mock-wrap .phone-iframe-wrap {
+    background: var(--section-bg);
+  }
+  .phone-pair {
+    display: flex; gap: 14px; justify-content: center; align-items: flex-start; flex-wrap: wrap;
+  }
+  .phone-pair .phone-iframe-wrap {
+    width: 200px; height: 418px; background: var(--section-bg);
+    border-radius: 22px;
+  }
+  .phone-pair .phone-iframe-wrap iframe {
+    width: 401px; height: 838px;
+    transform: scale(0.499);
+  }
+
+  /* ===== COMPETITORS (Slides 10-12) ===== */
+  .competitors { background: #fff; }
+  .comp-grid { max-width: 1100px; margin: 0 auto 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .comp-card { background: #fff; border: 1px solid #EFEFF6; border-radius: 18px; overflow: hidden; }
+  .comp-card-head { padding: 16px 20px; color: #fff; }
+  .comp-card-head.ch-pink { background: var(--pink); }
+  .comp-card-head.ch-purple { background: var(--indigo); }
+  .comp-card-head.ch-amber { background: var(--amber); }
+  .comp-card-head.ch-green { background: var(--green); }
+  .comp-card-head h4 { font-size: 16px; font-weight: 800; }
+  .comp-card-head span { font-size: 12px; opacity: 0.8; }
+  .comp-card-body { padding: 16px 20px; }
+  .comp-card-body .give { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+  .comp-card-body .miss { font-size: 13px; color: var(--muted); }
+
+  .usp-banner { max-width: 1100px; margin: 0 auto; background: var(--ink); border-radius: 24px; padding: 48px; display: flex; align-items: center; gap: 48px; }
+  .usp-banner .usp-left { flex: 1; }
+  .usp-banner .usp-label { font-size: 12px; font-weight: 700; color: var(--lavender); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+  .usp-banner h3 { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 8px; }
+  .usp-banner .usp-features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+  .usp-feat { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: rgba(255,255,255,0.06); border-radius: 12px; }
+  .usp-feat .uf-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .usp-feat .uf-icon.uf-pink { background: rgba(236,72,153,0.15); }
+  .usp-feat .uf-icon.uf-purple { background: rgba(129,140,248,0.15); }
+  .usp-feat .uf-icon.uf-green { background: rgba(16,185,129,0.15); }
+  .usp-feat .uf-icon.uf-amber { background: rgba(245,158,11,0.15); }
+  .usp-feat .uf-text h5 { font-size: 13px; font-weight: 700; color: #fff; }
+  .usp-feat .uf-text p { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .usp-flow { background: rgba(129,140,248,0.1); border-radius: 14px; padding: 16px 24px; margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .usp-flow span { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .usp-flow .arrow { color: var(--indigo); }
+
+  /* ===== MONETIZATION (Slide 13) ===== */
+  .monetization { background: var(--section-bg); }
+  .mon-tiers { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .mon-card { background: #fff; border: 1px solid #EFEFF6; border-radius: 20px; padding: 32px 28px; }
+  .mon-btn { display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 10px; font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .mon-btn.mb-blue { background: var(--indigo); }
+  .mon-btn.mb-pink { background: var(--pink); }
+  .mon-btn.mb-green { background: var(--green); }
+  .mon-mau { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .mon-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .mon-list li { font-size: 14px; color: var(--ink); line-height: 1.45; padding-left: 18px; position: relative; }
+  .mon-list li::before { content: '•'; position: absolute; left: 0; color: var(--indigo); font-weight: 700; }
+  .mon-arpu { font-size: 13px; font-weight: 700; color: var(--indigo); margin-top: 14px; padding-top: 12px; border-top: 1px solid #EFEFF6; }
+  .breakeven-banner { max-width: 1100px; margin: 32px auto 0; background: var(--ink); border-radius: 18px; padding: 28px 36px; color: #fff; display: flex; align-items: center; gap: 20px; }
+  .breakeven-banner .be-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .breakeven-banner .be-desc { font-size: 14px; color: rgba(255,255,255,0.6); }
+
+  /* Comparison table */
+  .comp-table-wrap { max-width: 1100px; margin: 0 auto 48px; overflow-x: auto; }
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .comp-table th, .comp-table td { padding: 14px 16px; text-align: center; border-bottom: 1px solid #EFEFF6; }
+  .comp-table th { font-weight: 700; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .comp-table th:first-child, .comp-table td:first-child { text-align: left; font-weight: 600; }
+  .comp-table th.th-us { color: var(--indigo); background: rgba(79,70,229,0.04); border-radius: 10px 10px 0 0; }
+  .comp-table td.td-us { background: rgba(79,70,229,0.04); }
+  .comp-table .check { color: var(--indigo); font-weight: 800; font-size: 18px; }
+  .comp-table .check-g { color: var(--green); font-weight: 800; font-size: 18px; }
+  .comp-table .dash { color: #D1D5DB; }
+
+  /* Startup steps */
+  .startup-grid { max-width: 1100px; margin: 0 auto 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .startup-card { background: #fff; border: 1px solid #EFEFF6; border-radius: 16px; padding: 24px; display: flex; align-items: flex-start; gap: 14px; }
+  .startup-num { width: 36px; height: 36px; border-radius: 50%; background: var(--indigo); color: #fff; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .startup-card p { font-size: 14px; color: var(--ink); font-weight: 600; line-height: 1.45; }
+
+  /* North Star Metric */
+  .nsm-banner { max-width: 1100px; margin: 0 auto 32px; background: var(--ink); border-radius: 18px; padding: 28px 36px; display: flex; align-items: center; gap: 32px; }
+  .nsm-banner .nsm-label { font-size: 11px; font-weight: 700; color: var(--lavender); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .nsm-banner .nsm-val { font-size: 26px; font-weight: 800; color: #fff; }
+  .nsm-banner .nsm-desc { font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  /* ===== MVP & METRICS (Slides 15-16) ===== */
+  .mvp { background: #fff; }
+  .mvp-grid { max-width: 1100px; margin: 0 auto 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .mvp-card { background: var(--card-bg); border: 1px solid #EFEFF6; border-radius: 16px; padding: 24px; display: flex; align-items: flex-start; gap: 14px; }
+  .mvp-check { width: 28px; height: 28px; border-radius: 8px; background: rgba(16,185,129,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--green); font-size: 16px; }
+  .mvp-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .mvp-card p { font-size: 13px; color: var(--muted); }
+  .mvp-goal { max-width: 1100px; margin: 0 auto 48px; background: rgba(79,70,229,0.06); border-radius: 16px; padding: 20px 28px; text-align: center; font-size: 16px; font-weight: 600; color: var(--ink); }
+
+  .metrics-row { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .metric-card { background: #fff; border: 1px solid #EFEFF6; border-radius: 16px; padding: 24px; position: relative; overflow: hidden; }
+  .metric-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+  .metric-card.mc-indigo::before { background: var(--indigo); }
+  .metric-card.mc-pink::before { background: var(--pink); }
+  .metric-card.mc-green::before { background: var(--green); }
+  .metric-card.mc-amber::before { background: var(--amber); }
+  .metric-card .mc-name { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+  .metric-card .mc-val { font-size: 24px; font-weight: 800; color: var(--ink); margin-bottom: 4px; }
+  .metric-card .mc-sub { font-size: 12px; color: var(--muted); }
+
+  /* ===== INVESTMENT (Slides 17-18) ===== */
+  .investment { background: linear-gradient(170deg, var(--ink) 0%, #312E81 100%); color: #fff; }
+  .investment .section-header h2 { color: #fff; }
+  .investment .section-header p { color: rgba(255,255,255,0.6); }
+  .investment .section-tag { background: rgba(255,255,255,0.1); color: var(--lavender); }
+  .inv-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .inv-points { display: flex; flex-direction: column; gap: 20px; }
+  .inv-point { display: flex; gap: 14px; align-items: flex-start; }
+  .inv-check { width: 32px; height: 32px; border-radius: 10px; background: rgba(129,140,248,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--lavender); font-size: 18px; }
+  .inv-point h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .inv-point p { font-size: 14px; color: rgba(255,255,255,0.6); }
+  .inv-sidebar { background: rgba(255,255,255,0.06); border-radius: 20px; padding: 32px; }
+  .inv-sidebar h4 { font-size: 14px; font-weight: 700; color: var(--lavender); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 20px; }
+  .inv-sidebar ul { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .inv-sidebar li { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.8); padding-left: 16px; position: relative; }
+  .inv-sidebar li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--lavender); }
+  .inv-tagline { margin-top: 32px; font-size: 14px; color: rgba(255,255,255,0.4); font-style: italic; }
+
+  /* ===== CTA ===== */
+  .cta { background: #fff; text-align: center; }
+  .cta-box { max-width: 800px; margin: 0 auto; padding: 72px 48px; background: linear-gradient(135deg, var(--indigo), #6366F1); border-radius: 32px; box-shadow: 0 30px 80px -20px rgba(79,70,229,0.4); position: relative; overflow: hidden; }
+  .cta-box::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+  .cta-box h2 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 16px; position: relative; z-index: 1; }
+  .cta-box p { font-size: 17px; color: rgba(255,255,255,0.75); margin-bottom: 32px; position: relative; z-index: 1; }
+  .cta-buttons { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; position: relative; z-index: 1; }
+
+  /* Footer */
+  footer { padding: 48px; background: var(--ink); color: rgba(255,255,255,0.5); text-align: center; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-size: 18px; font-weight: 800; color: #fff; }
+  .footer-logo span { color: var(--lavender); }
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a { font-size: 14px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: #fff; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .hero-inner { flex-direction: column; text-align: center; gap: 48px; }
+    .hero-text { max-width: 100%; }
+    .hero h1 { font-size: 42px; }
+    .hero p { margin-left: auto; margin-right: auto; }
+    .hero-buttons { justify-content: center; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .audience-cards { grid-template-columns: 1fr; }
+    .audience-bottom { grid-template-columns: 1fr; }
+    .product-row { grid-template-columns: 1fr; gap: 32px; }
+    .product-row.reverse { direction: ltr; }
+    .comp-grid { grid-template-columns: repeat(2, 1fr); }
+    .startup-grid { grid-template-columns: repeat(2, 1fr); }
+    .mon-tiers { grid-template-columns: 1fr; }
+    .mvp-grid { grid-template-columns: repeat(2, 1fr); }
+    .metrics-row { grid-template-columns: repeat(2, 1fr); }
+    .inv-grid { grid-template-columns: 1fr; }
+    .usp-banner { flex-direction: column; }
+    section { padding: 72px 24px; }
+    .topnav { padding: 0 24px; }
+  }
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 34px; }
+    .section-header h2 { font-size: 30px; }
+    .topnav-links { display: none; }
+    .alt-cards { grid-template-columns: 1fr; }
+    .comp-grid { grid-template-columns: 1fr; }
+    .startup-grid { grid-template-columns: 1fr; }
+    .mvp-grid { grid-template-columns: 1fr; }
+    .metrics-row { grid-template-columns: 1fr; }
+    .cta-box { padding: 48px 24px; }
+    .cta-box h2 { font-size: 28px; }
+    .footer-inner { flex-direction: column; text-align: center; }
+    .usp-banner .usp-features { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="topnav" id="topnav">
+    <a href="#" class="topnav-logo">Spen<span>Day</span></a>
+    <div class="topnav-links">
+      <a href="#problem">Проблема</a>
+      <a href="#audience">Аудитория</a>
+      <a href="#product">Продукт</a>
+      <a href="#competitors">Рынок</a>
+      <a href="#monetization">Монетизация</a>
+      <a href="#mvp">MVP</a>
+      <a href="#investment">Инвестиции</a>
+    </div>
+    <a href="#cta" class="btn-primary">Скачать</a>
+  </nav>
+
+  <!-- ===== HERO (Slide 1) ===== -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-sub">Продуктовая студия · 2026</div>
+        <h1>Spen<span class="accent">Day</span></h1>
+        <div class="hero-tagline">Готовые сценарии досуга с понятным бюджетом</div>
+        <p>Выбрать вечер за 10 минут — а не за вечер бесконечного поиска.</p>
+        <div class="hero-buttons">
+          <a href="#" class="btn-white">Скачать бесплатно</a>
+          <a href="#product" class="btn-ghost">Узнать больше</a>
+        </div>
+      </div>
+      <div class="hero-phone">
+        <div class="phone-glow"></div>
+        <div class="phone-iframe-wrap">
+          <iframe src="SpenDay Feed.html" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROBLEM (Slides 1-2) ===== -->
+  <section class="problem" id="problem">
+    <div class="section-header">
+      <div class="section-tag">История · Пятница, 19:00</div>
+      <h2>Как наша компания выбирала, куда пойти</h2>
+      <p>Знакомая ситуация: вечер пятницы, компания хочет куда-то пойти — и начинается бесконечный поиск</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-story">
+        <div class="bubbles">
+          <div class="bubble gray">«Давайте в рилсы — там же куча идей»</div>
+          <div class="bubble purple">«Листаем 40 минут — ничего, только залипли»</div>
+          <div class="bubble gray">«О, у нас же есть сохранённые!»</div>
+          <div class="bubble purple">«Там 300 роликов про еду и ноль решений»</div>
+        </div>
+        <div class="result-box">
+          <div class="rlbl">Что в итоге</div>
+          <div class="big">≈ 1 час</div>
+          <div class="rdesc">обсуждений и споров в чате</div>
+          <div class="rline"></div>
+          <div class="ritem">Итог: пошли туда же, куда ходим всегда.</div>
+        </div>
+      </div>
+      <div class="problem-visual">
+        <div class="overload-banner">
+          <h4>Когнитивная перегрузка</h4>
+          <p>Слишком много решений и источников информации за один вечер</p>
+          <div class="pill">5+ сервисов · 0 структуры</div>
+        </div>
+        <div class="alt-cards">
+          <div class="alt-card">
+            <div class="alt-name">Instagram, TikTok</div>
+            <div class="alt-desc">Идеи, но без плана</div>
+          </div>
+          <div class="alt-card">
+            <div class="alt-name">Карты, 2ГИС</div>
+            <div class="alt-desc">Места, но что искать?</div>
+          </div>
+          <div class="alt-card">
+            <div class="alt-name">Афиша, Aviasales</div>
+            <div class="alt-desc">События, но дорого</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TARGET AUDIENCE (Slides 3-5) ===== -->
+  <section class="audience" id="audience">
+    <div class="section-header">
+      <div class="section-tag">Исследования ЦА</div>
+      <h2>Что мы узнали из интервью</h2>
+      <p>Глубинные интервью с ЦА — разные города, возраст и форматы. Боли повторялись у всех.</p>
+    </div>
+    <div class="audience-cards">
+      <div class="aud-card">
+        <div class="aud-icon ai-pink">🎯</div>
+        <h3>Не знают, чем заняться</h3>
+        <p>Хотят попробовать новое, но устают от поиска и откладывают.</p>
+      </div>
+      <div class="aud-card">
+        <div class="aud-icon ai-purple">⏰</div>
+        <h3>Выбор съедает вечер</h3>
+        <p>30–90 минут на 4+ сервиса — и снова привычное место.</p>
+      </div>
+      <div class="aud-card">
+        <div class="aud-icon ai-green">💰</div>
+        <h3>Нужен бюджет заранее</h3>
+        <p>Хотят понимать стоимость вечера ещё до того, как собрались.</p>
+      </div>
+    </div>
+    <div class="audience-bottom">
+      <div class="aud-main-box">
+        <div class="aud-age">
+          <div class="top">18</div>
+          <div class="bot">30</div>
+        </div>
+        <div>
+          <h4>Молодые горожане</h4>
+          <div class="sub">18–30 лет · города от 300 000</div>
+        </div>
+      </div>
+      <div class="aud-sam">
+        <div class="sam-label">Размер аудитории (SAM)</div>
+        <div class="sam-val">≈ 8 млн человек</div>
+        <div class="sam-desc">26 городов от 300k</div>
+      </div>
+    </div>
+    <div class="main-insight">
+      <div class="dot"></div>
+      <p>Главный вывод: понятного бюджета до встречи нет нигде в структурированном виде — это и есть незакрытая боль.</p>
+    </div>
+  </section>
+
+  <!-- ===== PRODUCT UX (Slides 6-9) ===== -->
+  <section class="product" id="product">
+    <div class="section-header">
+      <div class="section-tag">Продукт · UX</div>
+      <h2>А если бы у компании был SpenDay</h2>
+      <p>Весь путь вечера — от идеи до расходов — в одном приложении</p>
+    </div>
+
+    <!-- Feed: Selection -->
+    <div class="product-row">
+      <div class="screen-mock-wrap">
+        <div class="phone-iframe-wrap">
+          <iframe src="SpenDay Feed.html" loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="product-info">
+        <h3>Выбор готового сценария</h3>
+        <p>Карточка показывает всё, что нужно для решения — сразу. Не список мест, а готовый вариант вечера.</p>
+        <div class="product-points">
+          <div class="product-point"><div class="pp-dot pp-pink"></div>Название и ситуация — свидание, с друзьями, прогулка…</div>
+          <div class="product-point"><div class="pp-dot pp-blue"></div>Бюджет на человека — понятная сумма ещё до клика</div>
+          <div class="product-point"><div class="pp-dot pp-black"></div>Длительность и места — сколько времени и где</div>
+          <div class="product-point"><div class="pp-dot pp-green"></div>Формат и теги — дома, в городе, на природе</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail: Steps -->
+    <div class="product-row reverse">
+      <div class="screen-mock-wrap">
+        <div class="phone-iframe-wrap">
+          <iframe src="SpenDay Detail.html" loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="product-info">
+        <h3>Просмотр сценария</h3>
+        <p>Внутри сценария — весь вечер по шагам и стоимостям. Пользователь сразу понимает, что будет и сколько это стоит.</p>
+        <div class="product-points">
+          <div class="product-point"><div class="pp-dot pp-blue"></div>Пошаговый план вечера с описанием каждого места</div>
+          <div class="product-point"><div class="pp-dot pp-pink"></div>Цена за каждый шаг — прозрачность бюджета</div>
+          <div class="product-point"><div class="pp-dot pp-green"></div>Советы и лайфхаки для каждого шага</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voting: Company agreement -->
+    <div class="product-row">
+      <div class="screen-mock-wrap">
+        <div class="phone-iframe-wrap">
+          <iframe src="SpenDay Voting.html" loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="product-info">
+        <h3>Согласование с компанией</h3>
+        <p>Скинул ссылку — компания выбрала за 5 минут. Друзья голосуют без регистрации и скачивания.</p>
+        <div class="product-points">
+          <div class="product-point"><div class="pp-dot pp-blue"></div>Поделиться сценариями в общий чат</div>
+          <div class="product-point"><div class="pp-dot pp-green"></div>Друзья голосуют без регистрации и скачивания</div>
+          <div class="product-point"><div class="pp-dot pp-pink"></div>Результат виден всем в реальном времени</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculator + Profile: expenses & retention -->
+    <div class="product-row reverse">
+      <div class="screen-mock-wrap">
+        <div class="phone-pair">
+          <div class="phone-iframe-wrap">
+            <iframe src="SpenDay Calculator.html" loading="lazy"></iframe>
+          </div>
+          <div class="phone-iframe-wrap">
+            <iframe src="SpenDay Profile.html" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="product-info">
+        <h3>После встречи: расходы и сохранение</h3>
+        <p>SpenDay закрывает весь путь вечера — от разделения счёта до сохранения удачного сценария на будущее.</p>
+        <div class="product-points">
+          <div class="product-point"><div class="pp-dot pp-blue"></div>Калькулятор расходов — кто кому сколько должен — без регистрации</div>
+          <div class="product-point"><div class="pp-dot pp-green"></div>Сохранение сценария — удачный вечер в один тап</div>
+          <div class="product-point"><div class="pp-dot pp-pink"></div>Личный календарь — история вечеров и план на будущее</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activities: saved scenarios -->
+    <div class="product-row">
+      <div class="screen-mock-wrap">
+        <div class="phone-iframe-wrap">
+          <iframe src="SpenDay Activities.html" loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="product-info">
+        <h3>Активности — сохранённые сценарии</h3>
+        <p>Все удачные вечера сохраняются в папки по ситуациям. Делитесь папками с друзьями и голосуйте вместе.</p>
+        <div class="product-points">
+          <div class="product-point"><div class="pp-dot pp-pink"></div>Папки по ситуациям — свидание, друзья, прогулка</div>
+          <div class="product-point"><div class="pp-dot pp-blue"></div>Шаринг папки — отправить компании в чат</div>
+          <div class="product-point"><div class="pp-dot pp-green"></div>Совместное голосование — каждый выбирает свой вариант</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Builder: create new scenario -->
+    <div class="product-row reverse">
+      <div class="screen-mock-wrap">
+        <div class="phone-iframe-wrap">
+          <iframe src="SpenDay Builder.html" loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="product-info">
+        <h3>Конструктор сценариев</h3>
+        <p>Создавайте свои сценарии — добавляйте шаги, указывайте бюджет и публикуйте для сообщества.</p>
+        <div class="product-points">
+          <div class="product-point"><div class="pp-dot pp-blue"></div>Добавление шагов — перетаскивание и редактирование</div>
+          <div class="product-point"><div class="pp-dot pp-pink"></div>Автоматический бюджет — итого по шагам на человека</div>
+          <div class="product-point"><div class="pp-dot pp-green"></div>Публикация — ваш сценарий доступен всем пользователям</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPETITORS (Slides 10-12) ===== -->
+  <section class="competitors" id="competitors">
+    <div class="section-header">
+      <div class="section-tag">Рынок и конкуренты</div>
+      <h2>Какие альтернативы есть сейчас</h2>
+      <p>Каждый сервис закрывает свой кусок пути — собрать решение всё равно приходится самому</p>
+    </div>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-card-head ch-pink"><h4>Соцсети</h4><span>TikTok, Instagram, Pinterest</span></div>
+        <div class="comp-card-body">
+          <div class="give">Дают идеи и вдохновение</div>
+          <div class="miss">Нет плана, цен и согласования</div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-head ch-purple"><h4>Карты</h4><span>2ГИС, Яндекс.Карты</span></div>
+        <div class="comp-card-body">
+          <div class="give">Находят место и маршруты</div>
+          <div class="miss">Нужно уже знать, что ищешь</div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-head ch-amber"><h4>Афиши</h4><span>Афиша, Aviasales, Tripadvisor</span></div>
+        <div class="comp-card-body">
+          <div class="give">События и точные цены</div>
+          <div class="miss">Дорогой и редкий сегмент</div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-head ch-green"><h4>Деление расходов</h4><span>Splitwise, Tricount</span></div>
+        <div class="comp-card-body">
+          <div class="give">Делят счёт после траты</div>
+          <div class="miss">Не отвечают «куда идём?»</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Почему конкуренты не закрывают путь целиком -->
+    <div class="section-header" style="margin-top:48px;margin-bottom:24px;">
+      <h2 style="font-size:28px;">Почему конкуренты не закрывают путь целиком</h2>
+    </div>
+    <div class="comp-table-wrap">
+      <table class="comp-table">
+        <thead><tr>
+          <th></th><th class="th-us">SpenDay</th><th>Соцсети</th><th>Splitwise</th><th>Карты</th><th>Афиша</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Готовый сценарий под ситуацию</td><td class="td-us"><span class="check">✓</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td></tr>
+          <tr><td>Бюджет известен заранее</td><td class="td-us"><span class="check">✓</span></td><td><span class="dash">—</span></td><td><span class="check-g">✓</span></td><td><span class="dash">—</span></td><td><span class="check-g">✓</span></td></tr>
+          <tr><td>Групповое согласование</td><td class="td-us"><span class="check">✓</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td></tr>
+          <tr><td>Базовые функции без регистрации</td><td class="td-us"><span class="check">✓</span></td><td><span class="check-g">✓</span></td><td><span class="dash">—</span></td><td><span class="check-g">✓</span></td><td><span class="dash">—</span></td></tr>
+          <tr><td>Повседневный досуг</td><td class="td-us"><span class="check">✓</span></td><td><span class="check-g">✓</span></td><td><span class="dash">—</span></td><td><span class="check-g">✓</span></td><td><span class="dash">—</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="usp-banner">
+      <div class="usp-left">
+        <div class="usp-label">УТП SpenDay</div>
+        <h3>SpenDay превращает вопрос «куда пойти?» в готовый план вечера с понятным бюджетом</h3>
+        <div class="usp-features">
+          <div class="usp-feat">
+            <div class="uf-icon uf-pink">🎯</div>
+            <div class="uf-text"><h5>Сценарий под ситуацию</h5><p>Готовый план, а не список мест</p></div>
+          </div>
+          <div class="usp-feat">
+            <div class="uf-icon uf-purple">💰</div>
+            <div class="uf-text"><h5>Понятный бюджет заранее</h5><p>Стоимость на человека до клика</p></div>
+          </div>
+          <div class="usp-feat">
+            <div class="uf-icon uf-green">🗳</div>
+            <div class="uf-text"><h5>Согласование без регистрации</h5><p>Голосование по ссылке в чате</p></div>
+          </div>
+          <div class="usp-feat">
+            <div class="uf-icon uf-amber">🧮</div>
+            <div class="uf-text"><h5>Калькулятор расходов</h5><p>Кто кому сколько — за секунды</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1100px;margin:24px auto 0;">
+      <div class="usp-flow">
+        <span>Ситуация</span><span class="arrow">→</span>
+        <span>Сценарий</span><span class="arrow">→</span>
+        <span>Бюджет</span><span class="arrow">→</span>
+        <span>Согласование</span><span class="arrow">→</span>
+        <span>Расходы</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MONETIZATION (Slide 13) ===== -->
+  <section class="monetization" id="monetization">
+    <div class="section-header">
+      <div class="section-tag">Монетизация</div>
+      <h2>Как SpenDay зарабатывает</h2>
+      <p>Базовый продукт бесплатный — это растит аудиторию и не мешает UX. Доход подключается поэтапно.</p>
+    </div>
+    <div class="mon-tiers">
+      <div class="mon-card">
+        <div class="mon-btn mb-blue">Старт</div>
+        <div class="mon-mau">0 – 10 000 MAU</div>
+        <ul class="mon-list">
+          <li>Реклама РСЯ (eCPM 50–110 ₽)</li>
+          <li>Нативные партнёрства 5–20k ₽/мес</li>
+        </ul>
+        <div class="mon-arpu">ARPU: ~2–3 ₽</div>
+      </div>
+      <div class="mon-card">
+        <div class="mon-btn mb-pink">Рост</div>
+        <div class="mon-mau">10 000 – 100 000 MAU</div>
+        <ul class="mon-list">
+          <li>Платный UGC: комиссия с авторов</li>
+          <li>Подписка на авторов сценариев</li>
+        </ul>
+        <div class="mon-arpu">ARPU: ~5 ₽</div>
+      </div>
+      <div class="mon-card">
+        <div class="mon-btn mb-green">Масштаб</div>
+        <div class="mon-mau">100 000+ MAU</div>
+        <ul class="mon-list">
+          <li>Агрегация и комиссия с покупок</li>
+          <li>Bundle: билеты, брони, доставка</li>
+        </ul>
+        <div class="mon-arpu">ARPU: ~8 ₽</div>
+      </div>
+    </div>
+    <div class="breakeven-banner">
+      <div>
+        <div class="be-title">Точка безубыточности: 10 000 MAU</div>
+        <div class="be-desc">20 000 ₽ серверы/мес + 2 ₽ ARPU. Дальше — выручка кратно обгоняет расходы.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MVP & METRICS (Slides 15-16) ===== -->
+  <section class="mvp" id="mvp">
+    <div class="section-header">
+      <div class="section-tag">MVP</div>
+      <h2>Что входит в MVP</h2>
+      <p>Минимум, чтобы проверить главную гипотезу — и собрать его можно быстро</p>
+    </div>
+    <div class="mvp-grid">
+      <div class="mvp-card">
+        <div class="mvp-check">✓</div>
+        <div><h4>Лента сценариев</h4><p>Готовые варианты вечера</p></div>
+      </div>
+      <div class="mvp-card">
+        <div class="mvp-check">✓</div>
+        <div><h4>Фильтры</h4><p>Ситуация · бюджет · формат</p></div>
+      </div>
+      <div class="mvp-card">
+        <div class="mvp-check">✓</div>
+        <div><h4>Карточка сценария</h4><p>Шаги, бюджет, длительность</p></div>
+      </div>
+      <div class="mvp-card">
+        <div class="mvp-check">✓</div>
+        <div><h4>Шаринг ссылкой</h4><p>Отправить компании в чат</p></div>
+      </div>
+      <div class="mvp-card">
+        <div class="mvp-check">✓</div>
+        <div><h4>Голосование</h4><p>Без регистрации и скачивания</p></div>
+      </div>
+      <div class="mvp-card">
+        <div class="mvp-check">✓</div>
+        <div><h4>Калькулятор расходов</h4><p>Разделить счёт за секунды</p></div>
+      </div>
+    </div>
+    <div class="mvp-goal">
+      Цель MVP: проверить, что люди выбирают досуг быстрее и возвращаются за новыми сценариями.
+    </div>
+
+    <!-- Как стартовать -->
+    <div class="section-header" style="margin-bottom:32px;">
+      <div class="section-tag">Старт</div>
+      <h2 style="font-size:28px;">Как стартовать</h2>
+    </div>
+    <div class="startup-grid">
+      <div class="startup-card">
+        <div class="startup-num">1</div>
+        <p>Небольшие блогеры с контентом в нашем формате</p>
+      </div>
+      <div class="startup-card">
+        <div class="startup-num">2</div>
+        <p>Готовые сценарии от команды платформы</p>
+      </div>
+      <div class="startup-card">
+        <div class="startup-num">3</div>
+        <p>Настройка SEO (5к запросов «чем заняться»)</p>
+      </div>
+      <div class="startup-card">
+        <div class="startup-num">4</div>
+        <p>Вирусный SMM</p>
+      </div>
+    </div>
+
+    <div class="section-header" style="margin-top:32px;">
+      <div class="section-tag">Метрики</div>
+      <h2>Как измеряем успех</h2>
+    </div>
+    <div class="nsm-banner">
+      <div>
+        <div class="nsm-label">North Star Metric</div>
+        <div class="nsm-val">MAU + Monthly Retention</div>
+      </div>
+      <div class="nsm-desc">Масштаб аудитории + качество роста — самая честная пара для продукта планирования досуга.</div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric-card mc-indigo">
+        <div class="mc-name">Time to Save</div>
+        <div class="mc-val">до 10 мин</div>
+        <div class="mc-sub">vs 30–90 мин сейчас</div>
+      </div>
+      <div class="metric-card mc-pink">
+        <div class="mc-name">Monthly Retention</div>
+        <div class="mc-val">25–35%</div>
+        <div class="mc-sub">ниже 15% — сигнал</div>
+      </div>
+      <div class="metric-card mc-green">
+        <div class="mc-name">DAU / MAU</div>
+        <div class="mc-val">12–18%</div>
+        <div class="mc-sub">норма lifestyle</div>
+      </div>
+      <div class="metric-card mc-amber">
+        <div class="mc-name">Сохранений / польз.</div>
+        <div class="mc-val">5–15</div>
+        <div class="mc-sub">ценность контента</div>
+      </div>
+      <div class="metric-card mc-indigo">
+        <div class="mc-name">Участники голосования</div>
+        <div class="mc-val">4+</div>
+        <div class="mc-sub">виральность</div>
+      </div>
+      <div class="metric-card mc-pink">
+        <div class="mc-name">CAC</div>
+        <div class="mc-val">≤ 100 ₽</div>
+        <div class="mc-sub">LTV/CAC > 2x</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INVESTMENT (Slides 17-18) ===== -->
+  <section class="investment" id="investment">
+    <div class="section-header">
+      <div class="section-tag">Инвестиции</div>
+      <h2>Почему в SpenDay можно инвестировать</h2>
+      <p>Масштаб аудитории + качество роста — самая честная пара для продукта планирования досуга</p>
+    </div>
+    <div class="inv-grid">
+      <div class="inv-points">
+        <div class="inv-point">
+          <div class="inv-check">✓</div>
+          <div><h4>Боль массовая и ежедневная</h4><p>SAM ≈ 8 млн человек, 18–30 лет в городах</p></div>
+        </div>
+        <div class="inv-point">
+          <div class="inv-check">✓</div>
+          <div><h4>Запуск дёшев</h4><p>MVP на простом стеке, безубыточность с 10 000 MAU</p></div>
+        </div>
+        <div class="inv-point">
+          <div class="inv-check">✓</div>
+          <div><h4>Рост встроен в продукт</h4><p>Голосование без регистрации = viral-петля</p></div>
+        </div>
+        <div class="inv-point">
+          <div class="inv-check">✓</div>
+          <div><h4>Понятная экономика</h4><p>ARPU растёт 2 → 8 ₽, модель прибыльна</p></div>
+        </div>
+      </div>
+      <div class="inv-sidebar">
+        <h4>Инвестиции идут в ускорение</h4>
+        <ul>
+          <li>Контент и сценарии</li>
+          <li>Микро-креаторы</li>
+          <li>Продвижение</li>
+          <li>Партнёрства</li>
+        </ul>
+        <div class="inv-tagline">Выбрать вечер за 10 минут — а не за вечер.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta" id="cta">
+    <div class="cta-box">
+      <h2>Начни планировать сегодня</h2>
+      <p>Скачай SpenDay бесплатно и открой мир впечатлений с контролем бюджета</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn-white">App Store</a>
+        <a href="#" class="btn-ghost">Google Play</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Spen<span>Day</span></div>
+      <div class="footer-links">
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Условия использования</a>
+        <a href="#">Поддержка</a>
+        <a href="#">Контакты</a>
+      </div>
+      <div>&copy; 2026 SpenDay. Все права защищены.</div>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('topnav').classList.toggle('scrolled', window.scrollY > 20);
+    });
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.aud-card, .product-row, .comp-card, .mvp-card, .metric-card, .inv-point, .mon-card, .startup-card').forEach(el => {
+      el.style.opacity = '0'; el.style.transform = 'translateY(24px)'; el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
